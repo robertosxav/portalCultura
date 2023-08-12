@@ -16,4 +16,4 @@ CREATE TABLE usuario_role (user_role_id smallint NOT NULL,user_id smallint NOT N
 ALTER TABLE usuario_role ADD CONSTRAINT usuario_role_1_fk FOREIGN KEY (user_id) REFERENCES usuario (user_id);
 ALTER TABLE usuario_role ADD CONSTRAINT usuario_role_2_fk FOREIGN KEY (role_id) REFERENCES role (role_id);
 
-select * from portal.public.usuario u 
+commit;
