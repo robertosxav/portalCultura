@@ -25,28 +25,28 @@ public class AuthResource {
 		@Autowired
 	    private AuthenticationManager authenticationManager;
 	    @Autowired
-	    private UserRepository repository;
+	    private UserRepository userRepository;
 	    @Autowired
 	    private TokenService tokenService;
 
 	    @PostMapping("/login")
 	    public ResponseEntity<LoginResponseDto> login(@RequestBody @Validated AuthenticationDto data){
-	    	String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-	    	var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), encryptedPassword);
+	    	var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
 	        var auth = this.authenticationManager.authenticate(usernamePassword);
-	        var token = tokenService.generateToken(usernamePassword.getName());
+	        var token = tokenService.generateToken(auth.getPrincipal().toString());
 	        return ResponseEntity.ok(new LoginResponseDto(token));   
 	    }
 
 	    @PostMapping("/register")
 	    public ResponseEntity<?> register(@RequestBody @Validated RegisterDto data){
-	        if(this.repository.findByUsername(data.username()) != null) return ResponseEntity.badRequest().build();
-
+	        //if(this.repository.findByUsername(data.username()) != null) return ResponseEntity.badRequest().build();
+	    	User user = userRepository.findByUsername(data.username()).get();
+	    	
 	        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
 	        User newUser = new User(data.username(),encryptedPassword,true,true,true,true,null);
 	        		//new User(data.username(), encryptedPassword, data.role());
 
-	        this.repository.save(newUser);
+	        this.userRepository.save(newUser);
 
 	        return ResponseEntity.ok().build();
 	    }
