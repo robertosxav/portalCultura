@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.aut</groupId>
 	<artifactId>ApiAutenticacao</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 	<name>ApiAutenticacao</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -69,6 +69,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>apiautenticacao</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
