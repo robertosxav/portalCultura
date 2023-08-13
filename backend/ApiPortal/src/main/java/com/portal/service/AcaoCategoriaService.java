@@ -1,14 +1,15 @@
 package com.portal.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
 import com.portal.model.AcaoCategoria;
 import com.portal.repository.AcaoCategoriaRepository;
 
@@ -16,36 +17,40 @@ import com.portal.repository.AcaoCategoriaRepository;
 public class AcaoCategoriaService {
 
 	@Autowired
-	private AcaoCategoriaRepository acaocategoriaRepository;
+	private AcaoCategoriaRepository acaoCategoriaRepository;
 
-	public AcaoCategoria salvar(AcaoCategoria acaocategoria) {
-		return acaocategoriaRepository.save(acaocategoria);
+	public AcaoCategoria salvar(AcaoCategoria acaoCategoria) {
+		acaoCategoria.ativar();
+		return acaoCategoriaRepository.save(acaoCategoria);
+	}
+
+	public AcaoCategoria atualizar(Long codigo, AcaoCategoria acaoCategoria) {
+		AcaoCategoria acaoCategoriaSave = buscarPeloCodigo(codigo);
+		BeanUtils.copyProperties(acaoCategoria, acaoCategoriaSave, "acaoCategoriaId","status");
+		acaoCategoriaSave.setAlteradoEm(LocalDate.now());
+		return acaoCategoriaRepository.save(acaoCategoriaSave);
 	}
 
 	public AcaoCategoria buscarPeloCodigo(Long codigo) {
-		AcaoCategoria acaocategoriaSalva = acaocategoriaRepository.findById(codigo).get();
-		if (acaocategoriaSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return acaocategoriaSalva;
+		AcaoCategoria acaoCategoriaSalva = acaoCategoriaRepository
+				.findById(codigo)
+				.orElseThrow(()-> new PortalException("Id não encontrado"));
+		
+		return acaoCategoriaSalva;
 	}
-
-	public AcaoCategoria atualizar(Long codigo, AcaoCategoria acaocategoria) {
-		AcaoCategoria acaocategoriaSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(acaocategoria, acaocategoriaSave, "acaoCategoriaId");
-		return acaocategoriaRepository.save(acaocategoriaSave);
-	}
-
+	
 	public Page<AcaoCategoria> pesquisar(Pageable pageable){
-		return acaocategoriaRepository.findAll(pageable);
+		return acaoCategoriaRepository.findAll(pageable);
 	}
 
 	public List<AcaoCategoria> listarTodos() {
-		return acaocategoriaRepository.findAll();
+		return acaoCategoriaRepository.findAll();
 	}
 
 	public void remover(Long codigo) {
-		acaocategoriaRepository.deleteById(codigo);
+		AcaoCategoria acaoCategoriaSave = buscarPeloCodigo(codigo);
+		acaoCategoriaSave.inativar();
+		acaoCategoriaRepository.save(acaoCategoriaSave);
 	}
 
 }
