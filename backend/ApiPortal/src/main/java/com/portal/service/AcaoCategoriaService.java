@@ -26,7 +26,7 @@ public class AcaoCategoriaService {
 
 	public AcaoCategoria atualizar(Long codigo, AcaoCategoria acaoCategoria) {
 		AcaoCategoria acaoCategoriaSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(acaoCategoria, acaoCategoriaSave, "acaoCategoriaId","status");
+		BeanUtils.copyProperties(acaoCategoria, acaoCategoriaSave, "id","status","incluidoEm");
 		acaoCategoriaSave.setAlteradoEm(LocalDate.now());
 		return acaoCategoriaRepository.save(acaoCategoriaSave);
 	}
