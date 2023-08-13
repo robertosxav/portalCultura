@@ -13,7 +13,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "public.area_cultural") 
+@Table(name = "area_cultural",schema="public") 
 public class AreaCultural implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;

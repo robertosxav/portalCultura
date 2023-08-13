@@ -13,7 +13,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "public.linha_acao") 
+@Table(name = "linha_acao",schema="public") 
 public class LinhaAcao implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;

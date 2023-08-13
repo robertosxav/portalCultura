@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "public.micro_regiao") 
+@Table(name = "micro_regiao",schema="public") 
 public class MicroRegiao implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;

@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "public.projeto_plano_dist") 
+@Table(name = "projeto_plano_dist",schema="public") 
 public class ProjetoPlanoDist implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;
