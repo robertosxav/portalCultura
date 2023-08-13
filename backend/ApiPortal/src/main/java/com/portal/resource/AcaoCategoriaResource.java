@@ -45,26 +45,26 @@ public class AcaoCategoriaResource {
 		return ResponseEntity.ok(acaocategoriaSalva);
 	}
 
-	@Operation(description = "Serviço para buscar uma categoria pelo código")
+	@Operation(description = "Serviço para buscar uma ação de categoria pelo código")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<AcaoCategoria> buscarPeloCodigo(@PathVariable final Long codigo) {
 		AcaoCategoria acaocategoria = acaoCategoriaService.buscarPeloCodigo(codigo);
 		return ResponseEntity.ok(acaocategoria);
 	}
 
-	@Operation(description = "Serviço para buscar todas categorias - paginado")
+	@Operation(description = "Serviço para buscar todas ações de categorias - paginado")
 	@GetMapping
 	public Page<AcaoCategoria> pesquisar(Pageable pageable) {
 		return acaoCategoriaService.pesquisar(pageable);
 	}
 
-	@Operation(description = "Serviço para buscar todas categorias")
+	@Operation(description = "Serviço para buscar todas ações de categorias")
 	@GetMapping("/all")
 	public List<AcaoCategoria> pesquisar() {
 		return acaoCategoriaService.listarTodos();
 	}
 
-	@Operation(description = "Serviço para excluir uma ação da catgoria")
+	@Operation(description = "Serviço para excluir uma ação da categoria")
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<String> remover(@PathVariable final Long codigo) {
 		acaoCategoriaService.remover(codigo);
