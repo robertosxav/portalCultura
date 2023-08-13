@@ -20,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portal.model.AcaoCategoria;
 import com.portal.service.AcaoCategoriaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Acões da Categoria")
 @RestController
 @RequestMapping("/acoescategoria")
 public class AcaoCategoriaResource {
@@ -27,34 +31,40 @@ public class AcaoCategoriaResource {
 	@Autowired
 	private AcaoCategoriaService acaoCategoriaService;
 
+	@Operation(description = "Serviço para criar uma ação da categoria")
 	@PostMapping
 	public ResponseEntity<AcaoCategoria> criar(@Validated @RequestBody AcaoCategoria acaocategoria) {
 		AcaoCategoria acaocategoriaSalva = acaoCategoriaService.salvar(acaocategoria);
 		return ResponseEntity.status(HttpStatus.CREATED).body(acaocategoriaSalva);
 	}
-
-	@GetMapping("/{codigo}")
-	public ResponseEntity<AcaoCategoria> buscarPeloCodigo(@PathVariable final Long codigo) {
-		AcaoCategoria acaocategoria = acaoCategoriaService.buscarPeloCodigo(codigo);
-		return ResponseEntity.ok(acaocategoria);
-	}
-
+	
+	@Operation(description = "Serviço para atualizar uma ação da categoria")
 	@PutMapping("/{codigo}")
 	public ResponseEntity<AcaoCategoria> atualizar(@PathVariable final Long codigo, @Validated @RequestBody AcaoCategoria acaocategoria) {
 		AcaoCategoria acaocategoriaSalva = acaoCategoriaService.atualizar(codigo, acaocategoria);
 		return ResponseEntity.ok(acaocategoriaSalva);
 	}
 
+	@Operation(description = "Serviço para buscar uma categoria pelo código")
+	@GetMapping("/{codigo}")
+	public ResponseEntity<AcaoCategoria> buscarPeloCodigo(@PathVariable final Long codigo) {
+		AcaoCategoria acaocategoria = acaoCategoriaService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(acaocategoria);
+	}
+
+	@Operation(description = "Serviço para buscar todas categorias - paginado")
 	@GetMapping
 	public Page<AcaoCategoria> pesquisar(Pageable pageable) {
 		return acaoCategoriaService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todas categorias")
 	@GetMapping("/all")
 	public List<AcaoCategoria> pesquisar() {
 		return acaoCategoriaService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para excluir uma ação da catgoria")
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<String> remover(@PathVariable final Long codigo) {
 		acaoCategoriaService.remover(codigo);
