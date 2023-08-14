@@ -11,8 +11,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,10 +37,11 @@ public class LinhaAcao implements Serializable{
 	@Column(name = "linha_acao_id")
 	private Long id;
 
-	@Column(name = "linha_acao_nome",length = 120)
+	@NotBlank(message = "Nome da linha de ação é orbrigatória")
+	@Column(name = "linha_acao_nome",length = 120,nullable = false)
 	private String nome;
 
-	@Column(name = "linha_acao_ativo")
+	@Column(name = "linha_acao_ativo",nullable = false)
 	private StatusEnum status;
 
 	@JsonFormat(pattern="dd/MM/yyyy")
@@ -48,8 +52,9 @@ public class LinhaAcao implements Serializable{
 	@Column(name = "linha_acao_alt_em")
 	private LocalDate alteradoEm;
 
-	@Column(name = "acao_categoria_id")
-	private Integer acaoCategoriaId;
+	@ManyToOne
+	@JoinColumn(name = "id",referencedColumnName = "acao_categoria_id")
+	private AcaoCategoria acaoCategoria;
 
 	public void ativar() {
 		this.incluidoEm = LocalDate.now();

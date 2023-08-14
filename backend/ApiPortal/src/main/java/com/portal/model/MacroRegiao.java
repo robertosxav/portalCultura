@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,10 +33,11 @@ public class MacroRegiao implements Serializable{
 	@Column(name = "macro_regiao_id")
 	private Long id;
 
-	@Column(name = "macro_regiao_nome",length = 120)
-	private String macroRegiaoNome;
+	@NotBlank(message = "Nome da macro região é obrigatória")
+	@Column(name = "macro_regiao_nome",length = 120,nullable = false)
+	private String nomeMacroRegiao;
 
-	@Column(name = "macro_regiao_ativo")
+	@Column(name = "macro_regiao_ativo",nullable = false)
 	private StatusEnum status; 
 	
 	public void ativar() {
