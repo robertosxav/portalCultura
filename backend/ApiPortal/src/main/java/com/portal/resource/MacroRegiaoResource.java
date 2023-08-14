@@ -23,7 +23,7 @@ import com.portal.service.MacroRegiaoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/macroregiaos")
+@RequestMapping("/macroregioes")
 public class MacroRegiaoResource {
 
 	@Autowired

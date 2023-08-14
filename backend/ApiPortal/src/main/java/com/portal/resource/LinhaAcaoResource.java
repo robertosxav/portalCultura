@@ -23,7 +23,7 @@ import com.portal.service.LinhaAcaoService;
 
 
 @RestController
-@RequestMapping("/linhaacaos")
+@RequestMapping("/linhasacoes")
 public class LinhaAcaoResource {
 
 	@Autowired

@@ -24,7 +24,7 @@ import com.portal.service.ProjetoAnexosService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetoanexos")
+@RequestMapping("/anexosprojeto")
 public class ProjetoAnexosResource {
 
 	@Autowired

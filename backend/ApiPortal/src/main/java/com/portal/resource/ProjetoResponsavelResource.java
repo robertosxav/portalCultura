@@ -24,7 +24,7 @@ import com.portal.service.ProjetoResponsavelService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetoresponsavels")
+@RequestMapping("/responsaveisprojeto")
 public class ProjetoResponsavelResource {
 
 	@Autowired

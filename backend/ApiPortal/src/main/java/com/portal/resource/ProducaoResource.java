@@ -24,7 +24,7 @@ import com.portal.service.ProducaoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/producaos")
+@RequestMapping("/producoes")
 public class ProducaoResource {
 
 	@Autowired

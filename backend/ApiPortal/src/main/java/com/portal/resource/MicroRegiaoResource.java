@@ -24,7 +24,7 @@ import com.portal.service.MicroRegiaoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/microregiaos")
+@RequestMapping("/microregioes")
 public class MicroRegiaoResource {
 
 	@Autowired
