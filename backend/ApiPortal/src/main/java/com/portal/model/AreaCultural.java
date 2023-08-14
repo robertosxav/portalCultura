@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,18 +35,19 @@ public class AreaCultural implements Serializable{
 	@Column(name = "area_cultural_id")
 	private Long id;
 
-	@Column(name = "area_cultural_nome",length = 120)
+	@NotBlank(message = "Nome é obrigatório")
+	@Column(name = "area_cultural_nome",length = 120,nullable = false)
 	private String nome;
 
-	@Column(name = "area_cultural_ativo")
+	@Column(name = "area_cultural_ativo",nullable = false)
 	private StatusEnum status;
 	
 	@JsonFormat(pattern="dd/MM/yyyy")
-	@Column(name = "area_cultural_inc_em")
+	@Column(name = "area_cultural_inc_em",nullable = false)
 	private LocalDate incluidoEm;
 
 	@JsonFormat(pattern="dd/MM/yyyy")
-	@Column(name = "area_cultural_alt_em")
+	@Column(name = "area_cultural_alt_em",nullable = false)
 	private LocalDate alteradoEm;
 	
 	public void ativar() {
