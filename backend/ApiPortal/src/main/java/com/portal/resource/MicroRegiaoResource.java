@@ -15,53 +15,59 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portal.model.MicroRegiao;
 import com.portal.service.MicroRegiaoService;
 
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Micro Regiões")
 @RestController
 @RequestMapping("/microregioes")
 public class MicroRegiaoResource {
 
 	@Autowired
-	private MicroRegiaoService microregiaoService;
+	private MicroRegiaoService microRegiaoService;
 
+	@Operation(description = "Serviço para criar uma micro região")
 	@PostMapping
-	public ResponseEntity<MicroRegiao> criar(@Validated @RequestBody MicroRegiao microregiao, HttpServletResponse response) {
-		 MicroRegiao microregiaoSalva = microregiaoService.salvar(microregiao);
-		return ResponseEntity.status(HttpStatus.CREATED).body(microregiaoSalva);
+	public ResponseEntity<MicroRegiao> criar(@Validated @RequestBody MicroRegiao microRegiao) {
+		MicroRegiao microRegiaoSalva = microRegiaoService.salvar(microRegiao);
+		return ResponseEntity.status(HttpStatus.CREATED).body(microRegiaoSalva);
 	}
-
-	@GetMapping("/{codigo}")
-	public ResponseEntity<MicroRegiao> buscarPeloCodigo(@PathVariable Long codigo) {
-		MicroRegiao microregiao = microregiaoService.buscarPeloCodigo(codigo);
-		return microregiao != null ? ResponseEntity.ok(microregiao) : ResponseEntity.notFound().build();
-	}
-
+	
+	@Operation(description = "Serviço para atualizar uma micro região")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<MicroRegiao> atualizar(@PathVariable Long codigo, @Validated @RequestBody MicroRegiao microregiao) {
-		MicroRegiao microregiaoSalva = microregiaoService.atualizar(codigo, microregiao);
-		return ResponseEntity.ok(microregiaoSalva);
+	public ResponseEntity<MicroRegiao> atualizar(@PathVariable final Long codigo, @Validated @RequestBody MicroRegiao microRegiao) {
+		MicroRegiao microRegiaoSalva = microRegiaoService.atualizar(codigo, microRegiao);
+		return ResponseEntity.ok(microRegiaoSalva);
 	}
 
+	@Operation(description = "Serviço para buscar uma micro região pelo código")
+	@GetMapping("/{codigo}")
+	public ResponseEntity<MicroRegiao> buscarPeloCodigo(@PathVariable final Long codigo) {
+		MicroRegiao microRegiao = microRegiaoService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(microRegiao);
+	}
+
+	@Operation(description = "Serviço para buscar todas micro regiões - paginado")
 	@GetMapping
 	public Page<MicroRegiao> pesquisar(Pageable pageable) {
-		return microregiaoService.pesquisar(pageable);
+		return microRegiaoService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todas micro regiões")
 	@GetMapping("/all")
 	public List<MicroRegiao> pesquisar() {
-		return microregiaoService.listarTodos();
+		return microRegiaoService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para excluir uma micro região")
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
-		microregiaoService.remover(codigo);
+	public void remover(@PathVariable final Long codigo) {
+		microRegiaoService.remover(codigo);
 	}
 
 }

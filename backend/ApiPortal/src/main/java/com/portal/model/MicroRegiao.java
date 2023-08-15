@@ -43,10 +43,14 @@ public class MicroRegiao implements Serializable{
 	private StatusEnum status;
 
 	@ManyToOne
-	@JoinColumn(name="id",referencedColumnName  = "macro_regiao_id")
+	@JoinColumn(name="macro_regiao_id",referencedColumnName  = "macro_regiao_id")
 	private MacroRegiao macroRegiao;
 
 	public void ativar() {
 		this.status = StatusEnum.ATIVO;
+	}
+	
+	public void inativar() {
+		this.status = StatusEnum.INATIVO;
 	}
 } 
