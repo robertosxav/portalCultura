@@ -1,0 +1,13 @@
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_rg DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_orgao_expeditor DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_data_nasc DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_email_alter DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_telefone DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_celular SET NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_uf DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_municipio DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_bairro DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_complemento DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_numero DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_endereco DROP NOT NULL;
+ALTER TABLE public.pessoa ALTER COLUMN pessoa_cep DROP NOT NULL;

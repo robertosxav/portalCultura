@@ -2,14 +2,25 @@ package com.portal.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity 
 @Table(name = "pessoa",schema="public") 
 public class Pessoa implements Serializable{ 
 	
@@ -18,191 +29,63 @@ public class Pessoa implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pessoa_id")
-	private Long pessoaId;
+	private Long id;
 
-	@Column(name = "pessoa_nome")
-	private String pessoaNome;
+	@Column(name = "pessoa_nome",nullable = false)
+	private String nome;
 
-	@Column(name = "pessoa_cpf")
-	private String pessoaCpf;
+	@Column(name = "pessoa_cpf",nullable = false)
+	private String cpf;
 
-	@Column(name = "pessoa_rg")
-	private String pessoaRg;
+	@Column(name = "pessoa_rg",nullable = true)
+	private String rg;
 
-	@Column(name = "pessoa_orgao_expeditor")
-	private String pessoaOrgaoExpeditor;
+	@Column(name = "pessoa_orgao_expeditor",nullable = true)
+	private String orgaoExpeditor;
 
-	@Column(name = "pessoa_data_nasc")
-	private String pessoaDataNasc;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "pessoa_data_nasc",nullable = true)
+	private String dataNasc;
 
-	@Column(name = "pessoa_email")
-	private String pessoaEmail;
+	@Column(name = "pessoa_email",nullable = false)
+	private String email;
 
-	@Column(name = "pessoa_email_alter")
-	private String pessoaEmailAlter;
+	@Column(name = "pessoa_email_alter",nullable = true)
+	private String emailAlter;
 
-	@Column(name = "pessoa_telefone")
-	private String pessoaTelefone;
+	@Column(name = "pessoa_telefone",nullable = true)
+	private String telefone;
 
-	@Column(name = "pessoa_celular")
-	private String pessoaCelular;
+	@Column(name = "pessoa_celular",nullable = false)
+	private String celular;
 
-	@Column(name = "pessoa_cep")
-	private String pessoaCep;
+	@Column(name = "pessoa_cep",nullable = true)
+	private String cep;
 
-	@Column(name = "pessoa_endereco")
-	private String pessoaEndereco;
+	@Column(name = "pessoa_endereco",nullable = true)
+	private String endereco;
 
-	@Column(name = "pessoa_numero")
-	private String pessoaNumero;
+	@Column(name = "pessoa_numero",nullable = true)
+	private String numero;
 
-	@Column(name = "pessoa_complemento")
-	private String pessoaComplemento;
+	@Column(name = "pessoa_complemento",nullable = true)
+	private String complemento;
 
-	@Column(name = "pessoa_bairro")
-	private String pessoaBairro;
+	@Column(name = "pessoa_bairro",nullable = true)
+	private String bairro;
 
-	@Column(name = "pessoa_municipio")
-	private String pessoaMunicipio;
+	@Column(name = "pessoa_municipio",nullable = true)
+	private String municipio;
 
-	@Column(name = "pessoa_uf")
-	private String pessoaUf;
+	@Column(name = "pessoa_uf",nullable = true)
+	private String uf;
 
-	public Long getPessoaId() {
-		return pessoaId;
+	public Pessoa(String nome, String cpf, String email, String celular) {
+		super();
+		this.nome = nome;
+		this.cpf = cpf;
+		this.email = email;
+		this.celular = celular;
 	}
-	 
-	public void setPessoaId(Long pessoaId) {
-		this.pessoaId = pessoaId;
-	}
-	 
-	public String getPessoaNome() {
-		return pessoaNome;
-	}
-	 
-	public void setPessoaNome(String pessoaNome) {
-		this.pessoaNome = pessoaNome;
-	}
-	 
-	public String getPessoaCpf() {
-		return pessoaCpf;
-	}
-	 
-	public void setPessoaCpf(String pessoaCpf) {
-		this.pessoaCpf = pessoaCpf;
-	}
-	 
-	public String getPessoaRg() {
-		return pessoaRg;
-	}
-	 
-	public void setPessoaRg(String pessoaRg) {
-		this.pessoaRg = pessoaRg;
-	}
-	 
-	public String getPessoaOrgaoExpeditor() {
-		return pessoaOrgaoExpeditor;
-	}
-	 
-	public void setPessoaOrgaoExpeditor(String pessoaOrgaoExpeditor) {
-		this.pessoaOrgaoExpeditor = pessoaOrgaoExpeditor;
-	}
-	 
-	public String getPessoaDataNasc() {
-		return pessoaDataNasc;
-	}
-	 
-	public void setPessoaDataNasc(String pessoaDataNasc) {
-		this.pessoaDataNasc = pessoaDataNasc;
-	}
-	 
-	public String getPessoaEmail() {
-		return pessoaEmail;
-	}
-	 
-	public void setPessoaEmail(String pessoaEmail) {
-		this.pessoaEmail = pessoaEmail;
-	}
-	 
-	public String getPessoaEmailAlter() {
-		return pessoaEmailAlter;
-	}
-	 
-	public void setPessoaEmailAlter(String pessoaEmailAlter) {
-		this.pessoaEmailAlter = pessoaEmailAlter;
-	}
-	 
-	public String getPessoaTelefone() {
-		return pessoaTelefone;
-	}
-	 
-	public void setPessoaTelefone(String pessoaTelefone) {
-		this.pessoaTelefone = pessoaTelefone;
-	}
-	 
-	public String getPessoaCelular() {
-		return pessoaCelular;
-	}
-	 
-	public void setPessoaCelular(String pessoaCelular) {
-		this.pessoaCelular = pessoaCelular;
-	}
-	 
-	public String getPessoaCep() {
-		return pessoaCep;
-	}
-	 
-	public void setPessoaCep(String pessoaCep) {
-		this.pessoaCep = pessoaCep;
-	}
-	 
-	public String getPessoaEndereco() {
-		return pessoaEndereco;
-	}
-	 
-	public void setPessoaEndereco(String pessoaEndereco) {
-		this.pessoaEndereco = pessoaEndereco;
-	}
-	 
-	public String getPessoaNumero() {
-		return pessoaNumero;
-	}
-	 
-	public void setPessoaNumero(String pessoaNumero) {
-		this.pessoaNumero = pessoaNumero;
-	}
-	 
-	public String getPessoaComplemento() {
-		return pessoaComplemento;
-	}
-	 
-	public void setPessoaComplemento(String pessoaComplemento) {
-		this.pessoaComplemento = pessoaComplemento;
-	}
-	 
-	public String getPessoaBairro() {
-		return pessoaBairro;
-	}
-	 
-	public void setPessoaBairro(String pessoaBairro) {
-		this.pessoaBairro = pessoaBairro;
-	}
-	 
-	public String getPessoaMunicipio() {
-		return pessoaMunicipio;
-	}
-	 
-	public void setPessoaMunicipio(String pessoaMunicipio) {
-		this.pessoaMunicipio = pessoaMunicipio;
-	}
-	 
-	public String getPessoaUf() {
-		return pessoaUf;
-	}
-	 
-	public void setPessoaUf(String pessoaUf) {
-		this.pessoaUf = pessoaUf;
-	}
-	 
 
 } 
