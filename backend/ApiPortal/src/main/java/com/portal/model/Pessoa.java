@@ -1,6 +1,7 @@
 package com.portal.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -35,7 +36,7 @@ public class Pessoa implements Serializable{
 	@Column(name = "pessoa_nome",nullable = false)
 	private String nome;
 
-	@Column(name = "pessoa_cpf",nullable = false)
+	@Column(name = "pessoa_cpf",nullable = false,unique = true)
 	private String cpf;
 
 	@Column(name = "pessoa_rg",nullable = true)
@@ -46,7 +47,7 @@ public class Pessoa implements Serializable{
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "pessoa_data_nasc",nullable = true)
-	private String dataNasc;
+	private LocalDate dataNasc;
 
 	@Column(name = "pessoa_email",nullable = false)
 	private String email;

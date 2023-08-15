@@ -1,6 +1,7 @@
 package com.portal.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,21 @@ import org.springframework.stereotype.Service;
 import com.portal.dto.PessoaDto;
 import com.portal.exceptions.PortalException;
 import com.portal.model.Pessoa;
+import com.portal.model.User;
 import com.portal.repository.PessoaRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PessoaService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
-
+	
+	@Autowired
+	private UsuarioService usuarioService; 
+	
+	@Transactional
 	public Pessoa cadastrarPessoa(PessoaDto pessoaDto) {
 		validar(pessoaDto);
 		Pessoa pessoa = new Pessoa(
@@ -27,13 +35,25 @@ public class PessoaService {
 					pessoaDto.getEmail(),
 					pessoaDto.getCelular()
 				);
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 		
-		return pessoaRepository.save(pessoa);
+		User user = new User(pessoaDto.getCpf(),pessoaDto.getSenha(),true,true,true,true); 
+		
+		usuarioService.criarUsuario(user);
+		return pessoaSalva;
 	}
 	
 	private void validar(PessoaDto pessoaDto) {
 		//Regras de negócio para cadastrar pessoa
 		
+		//verificar se já existe
+		
+		Optional<Pessoa> pessoa = pessoaRepository.findByCpf(pessoaDto.getCpf());
+		
+		if(pessoa.isPresent()) {
+			throw new PortalException("CPF já cadastrado");
+		}
+	
 	}
 
 	public Pessoa atualizarPessoa(Long codigo, Pessoa pessoa) {
