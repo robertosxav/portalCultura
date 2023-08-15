@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portal.model.User;
 import com.portal.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Usuários")
@@ -22,6 +23,7 @@ public class UsuarioResource {
 	@Autowired
 	UsuarioService usuarioService;
 	
+	@Operation(description = "Serviço para criar um usuário")
 	@PostMapping
 	public ResponseEntity<User> criarUsuario(@Validated @RequestBody User usuario) {
 		User usuarioSalvo = usuarioService.criarUsuario(usuario);
