@@ -43,6 +43,8 @@ public class MacroRegiao implements Serializable{
 	public void ativar() {
 		this.status = StatusEnum.ATIVO;
 	}
-
-
+	
+	public void inativar() {
+		this.status = StatusEnum.INATIVO;
+	}
 } 
