@@ -21,6 +21,8 @@ public class PessoaDto implements Serializable{
 	
 	private String email;
 	
+	private String emailConfirmacao;
+	
 	private String celular;
 	
 	private String senha;
