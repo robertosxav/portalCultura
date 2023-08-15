@@ -14,53 +14,59 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portal.model.MacroRegiao;
 import com.portal.service.MacroRegiaoService;
 
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Macro Regiões")
 @RestController
-@RequestMapping("/macroregiaos")
+@RequestMapping("/macroregioes")
 public class MacroRegiaoResource {
 
 	@Autowired
-	private MacroRegiaoService macroregiaoService;
+	private MacroRegiaoService macroRegiaoService;
 
+	@Operation(description = "Serviço para criar uma macro região")
 	@PostMapping
-	public ResponseEntity<MacroRegiao> criar(@Validated @RequestBody MacroRegiao macroregiao, HttpServletResponse response) {
-		 MacroRegiao macroregiaoSalva = macroregiaoService.salvar(macroregiao);
-		return ResponseEntity.status(HttpStatus.CREATED).body(macroregiaoSalva);
+	public ResponseEntity<MacroRegiao> criar(@Validated @RequestBody MacroRegiao macroRegiao) {
+		MacroRegiao macroRegiaoSalva = macroRegiaoService.salvar(macroRegiao);
+		return ResponseEntity.status(HttpStatus.CREATED).body(macroRegiaoSalva);
 	}
-
-	@GetMapping("/{codigo}")
-	public ResponseEntity<MacroRegiao> buscarPeloCodigo(@PathVariable Long codigo) {
-		MacroRegiao macroregiao = macroregiaoService.buscarPeloCodigo(codigo);
-		return macroregiao != null ? ResponseEntity.ok(macroregiao) : ResponseEntity.notFound().build();
-	}
-
+	
+	@Operation(description = "Serviço para atualizar uma macro região")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<MacroRegiao> atualizar(@PathVariable Long codigo, @Validated @RequestBody MacroRegiao macroregiao) {
-		MacroRegiao macroregiaoSalva = macroregiaoService.atualizar(codigo, macroregiao);
-		return ResponseEntity.ok(macroregiaoSalva);
+	public ResponseEntity<MacroRegiao> atualizar(@PathVariable final Long codigo, @Validated @RequestBody MacroRegiao macroRegiao) {
+		MacroRegiao macroRegiaoSalva = macroRegiaoService.atualizar(codigo, macroRegiao);
+		return ResponseEntity.ok(macroRegiaoSalva);
 	}
 
+	@Operation(description = "Serviço para buscar uma macro região pelo código")
+	@GetMapping("/{codigo}")
+	public ResponseEntity<MacroRegiao> buscarPeloCodigo(@PathVariable final Long codigo) {
+		MacroRegiao macroRegiao = macroRegiaoService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(macroRegiao);
+	}
+
+	@Operation(description = "Serviço para buscar todas macro regiões - paginado")
 	@GetMapping
 	public Page<MacroRegiao> pesquisar(Pageable pageable) {
-		return macroregiaoService.pesquisar(pageable);
+		return macroRegiaoService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todas macro regiões")
 	@GetMapping("/all")
 	public List<MacroRegiao> pesquisar() {
-		return macroregiaoService.listarTodos();
+		return macroRegiaoService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para excluir uma macro região")
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
-		macroregiaoService.remover(codigo);
+	public void remover(@PathVariable final Long codigo) {
+		macroRegiaoService.remover(codigo);
 	}
 
 }

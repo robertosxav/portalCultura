@@ -15,53 +15,60 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portal.model.AreaCultural;
 import com.portal.service.AreaCulturalService;
 
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Áreas Culturais")
 @RestController
-@RequestMapping("/areaculturals")
+@RequestMapping("/areasculturais")
 public class AreaCulturalResource {
 
 	@Autowired
-	private AreaCulturalService areaculturalService;
+	private AreaCulturalService areaCulturalService;
 
+	@Operation(description = "Serviço para criar uma área cultural")
 	@PostMapping
-	public ResponseEntity<AreaCultural> criar(@Validated @RequestBody AreaCultural areacultural, HttpServletResponse response) {
-		 AreaCultural areaculturalSalva = areaculturalService.salvar(areacultural);
-		return ResponseEntity.status(HttpStatus.CREATED).body(areaculturalSalva);
+	public ResponseEntity<AreaCultural> criar(@Validated @RequestBody AreaCultural areaCultural) {
+		 AreaCultural areaCulturalSalva = areaCulturalService.salvar(areaCultural);
+		return ResponseEntity.status(HttpStatus.CREATED).body(areaCulturalSalva);
 	}
 
+	@Operation(description = "Serviço para atualizar uma área cultural")
+	@PutMapping("/{codigo}")
+	public ResponseEntity<AreaCultural> atualizar(@PathVariable final Long codigo, @Validated @RequestBody AreaCultural areaCultural) {
+		AreaCultural areaCulturalSalva = areaCulturalService.atualizar(codigo, areaCultural);
+		return ResponseEntity.ok(areaCulturalSalva);
+	}
+	
+	@Operation(description = "Serviço para buscar uma área cultural pelo código")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<AreaCultural> buscarPeloCodigo(@PathVariable Long codigo) {
-		AreaCultural areacultural = areaculturalService.buscarPeloCodigo(codigo);
-		return areacultural != null ? ResponseEntity.ok(areacultural) : ResponseEntity.notFound().build();
+		AreaCultural areaCultural = areaCulturalService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(areaCultural);
 	}
 
-	@PutMapping("/{codigo}")
-	public ResponseEntity<AreaCultural> atualizar(@PathVariable Long codigo, @Validated @RequestBody AreaCultural areacultural) {
-		AreaCultural areaculturalSalva = areaculturalService.atualizar(codigo, areacultural);
-		return ResponseEntity.ok(areaculturalSalva);
-	}
-
+	@Operation(description = "Serviço para buscar todas áreas culturais - paginado")
 	@GetMapping
 	public Page<AreaCultural> pesquisar(Pageable pageable) {
-		return areaculturalService.pesquisar(pageable);
+		return areaCulturalService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todas áreas culturais")
 	@GetMapping("/all")
 	public List<AreaCultural> pesquisar() {
-		return areaculturalService.listarTodos();
+		return areaCulturalService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para excluir uma área cultural")
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
-		areaculturalService.remover(codigo);
+	public ResponseEntity<String> remover(@PathVariable Long codigo) {
+		areaCulturalService.remover(codigo);
+		return ResponseEntity.ok("Registro excluído com sucesso");
 	}
 
 }

@@ -24,7 +24,7 @@ import com.portal.service.ProjetoEquipeService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetoequipes")
+@RequestMapping("/equipesprojeto")
 public class ProjetoEquipeResource {
 
 	@Autowired

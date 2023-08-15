@@ -2,64 +2,55 @@ package com.portal.model;
 
 import java.io.Serializable;
 
+import com.portal.model.enuns.StatusEnum;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "public.micro_regiao") 
+@Table(name = "micro_regiao",schema="public") 
 public class MicroRegiao implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_MICRO_REGIAO")
+	@SequenceGenerator(name = "SEQUENCE_MICRO_REGIAO", sequenceName = "public.micro_regiao_id", allocationSize = 1)
 	@Column(name = "micro_regiao_id")
-	private Long microRegiaoId;
+	private Long id;
 
-	@Column(name = "micro_regiao_nome")
-	private String microRegiaoNome;
+	@NotBlank(message = "Nome da micro região é obrigatória")
+	@Column(name = "micro_regiao_nome",length = 120,nullable = false)
+	private String nomeMicroRegiao;
 
-	@Column(name = "micro_regiao_ativo")
-	private Integer microRegiaoAtivo;
+	@Column(name = "micro_regiao_ativo",nullable = false)
+	private StatusEnum status;
 
-	@Column(name = "macro_regiao_id")
-	private String macroRegiaoId;
+	@ManyToOne
+	@JoinColumn(name="macro_regiao_id",referencedColumnName  = "macro_regiao_id")
+	private MacroRegiao macroRegiao;
 
-	public Long getMicroRegiaoId() {
-		return microRegiaoId;
+	public void ativar() {
+		this.status = StatusEnum.ATIVO;
 	}
-	 
-	public void setMicroRegiaoId(Long microRegiaoId) {
-		this.microRegiaoId = microRegiaoId;
+	
+	public void inativar() {
+		this.status = StatusEnum.INATIVO;
 	}
-	 
-	public String getMicroRegiaoNome() {
-		return microRegiaoNome;
-	}
-	 
-	public void setMicroRegiaoNome(String microRegiaoNome) {
-		this.microRegiaoNome = microRegiaoNome;
-	}
-	 
-	public Integer getMicroRegiaoAtivo() {
-		return microRegiaoAtivo;
-	}
-	 
-	public void setMicroRegiaoAtivo(Integer microRegiaoAtivo) {
-		this.microRegiaoAtivo = microRegiaoAtivo;
-	}
-	 
-	public String getMacroRegiaoId() {
-		return macroRegiaoId;
-	}
-	 
-	public void setMacroRegiaoId(String macroRegiaoId) {
-		this.macroRegiaoId = macroRegiaoId;
-	}
-	 
-
 } 

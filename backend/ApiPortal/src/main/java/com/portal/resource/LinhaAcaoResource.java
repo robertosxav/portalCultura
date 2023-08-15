@@ -15,52 +15,60 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portal.model.LinhaAcao;
 import com.portal.service.LinhaAcaoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Linhas de Ações")
 @RestController
-@RequestMapping("/linhaacaos")
+@RequestMapping("/linhasacoes")
 public class LinhaAcaoResource {
 
 	@Autowired
-	private LinhaAcaoService linhaacaoService;
+	private LinhaAcaoService linhaAcaoService;
 	
+	@Operation(description = "Serviço para criar uma linha de ação")
 	@PostMapping
-	public ResponseEntity<LinhaAcao> criar(@Validated @RequestBody LinhaAcao linhaacao, jakarta.servlet.http.HttpServletResponse response) {
-		 LinhaAcao linhaacaoSalva = linhaacaoService.salvar(linhaacao);
-		return ResponseEntity.status(HttpStatus.CREATED).body(linhaacaoSalva);
+	public ResponseEntity<LinhaAcao> criar(@Validated @RequestBody LinhaAcao linhaAcao) {
+		 LinhaAcao linhaAcaoSalva = linhaAcaoService.salvar(linhaAcao);
+		return ResponseEntity.status(HttpStatus.CREATED).body(linhaAcaoSalva);
+	}
+	
+	@Operation(description = "Serviço para atualizar uma linha de ação")
+	@PutMapping("/{codigo}")
+	public ResponseEntity<LinhaAcao> atualizar(@PathVariable final Long codigo, @Validated @RequestBody LinhaAcao linhaAcao) {
+		LinhaAcao linhaAcaoSalva = linhaAcaoService.atualizar(codigo, linhaAcao);
+		return ResponseEntity.ok(linhaAcaoSalva);
 	}
 
+	@Operation(description = "Serviço para buscar uma linha de ação pelo código")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<LinhaAcao> buscarPeloCodigo(@PathVariable Long codigo) {
-		LinhaAcao linhaacao = linhaacaoService.buscarPeloCodigo(codigo);
-		return linhaacao != null ? ResponseEntity.ok(linhaacao) : ResponseEntity.notFound().build();
+		LinhaAcao linhaAcao = linhaAcaoService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(linhaAcao);
 	}
 
-	@PutMapping("/{codigo}")
-	public ResponseEntity<LinhaAcao> atualizar(@PathVariable Long codigo, @Validated @RequestBody LinhaAcao linhaacao) {
-		LinhaAcao linhaacaoSalva = linhaacaoService.atualizar(codigo, linhaacao);
-		return ResponseEntity.ok(linhaacaoSalva);
-	}
-
+	@Operation(description = "Serviço para buscar todas linhas de ações - paginado")
 	@GetMapping
 	public Page<LinhaAcao> pesquisar(Pageable pageable) {
-		return linhaacaoService.pesquisar(pageable);
+		return linhaAcaoService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todas linhas de ações")
 	@GetMapping("/all")
 	public List<LinhaAcao> pesquisar() {
-		return linhaacaoService.listarTodos();
+		return linhaAcaoService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para excluir uma linha de ação")
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
-		linhaacaoService.remover(codigo);
+	public ResponseEntity<String> remover(@PathVariable Long codigo) {
+		linhaAcaoService.remover(codigo);
+		return ResponseEntity.ok("Registro excluído com sucesso");
 	}
 
 }

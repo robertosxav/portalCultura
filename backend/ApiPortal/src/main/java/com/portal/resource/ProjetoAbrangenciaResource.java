@@ -24,7 +24,7 @@ import com.portal.service.ProjetoAbrangenciaService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetoabrangencias")
+@RequestMapping("/projetosabrangencia")
 public class ProjetoAbrangenciaResource {
 
 	@Autowired

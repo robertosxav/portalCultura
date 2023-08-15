@@ -24,7 +24,7 @@ import com.portal.service.ProjetoLinhaAcaoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetolinhaacaos")
+@RequestMapping("/linhasacoesprojeto")
 public class ProjetoLinhaAcaoResource {
 
 	@Autowired

@@ -24,7 +24,7 @@ import com.portal.service.ProjetoCoordenadorService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetocoordenadors")
+@RequestMapping("/coordenadoresprojeto")
 public class ProjetoCoordenadorResource {
 
 	@Autowired

@@ -24,7 +24,7 @@ import com.portal.service.ProjetoRecursoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetorecursos")
+@RequestMapping("/recursosprojeto")
 public class ProjetoRecursoResource {
 
 	@Autowired

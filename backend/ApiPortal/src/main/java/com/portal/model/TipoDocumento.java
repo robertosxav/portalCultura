@@ -13,7 +13,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "public.tipo_documento") 
+@Table(name = "tipo_documento") 
 public class TipoDocumento implements Serializable{ 
 	
 	private static final long serialVersionUID = 1L;

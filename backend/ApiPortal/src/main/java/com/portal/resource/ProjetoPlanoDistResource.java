@@ -24,7 +24,7 @@ import com.portal.service.ProjetoPlanoDistService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/projetoplanodists")
+@RequestMapping("/planodistprojeto")
 public class ProjetoPlanoDistResource {
 
 	@Autowired

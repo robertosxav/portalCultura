@@ -25,7 +25,7 @@ import com.portal.service.TipoDocumentoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/tipodocumentos")
+@RequestMapping("/tiposdocumento")
 public class TipoDocumentoResource {
 
 	@Autowired
