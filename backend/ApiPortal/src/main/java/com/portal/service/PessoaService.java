@@ -54,6 +54,11 @@ public class PessoaService {
 			throw new PortalException("CPF já cadastrado");
 		}
 	
+		//verificar se os emails são iguais
+		
+		if(!pessoaDto.getEmail().equals(pessoaDto.getEmailConfirmacao())) {
+			throw new PortalException("Os E-mails informados devem ser iguais");
+		}
 	}
 
 	public Pessoa atualizarPessoa(Long codigo, Pessoa pessoa) {
