@@ -1,14 +1,16 @@
 package com.portal.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
+import com.portal.model.AcaoCategoria;
 import com.portal.model.LinhaAcao;
 import com.portal.repository.LinhaAcaoRepository;
 
@@ -16,36 +18,48 @@ import com.portal.repository.LinhaAcaoRepository;
 public class LinhaAcaoService {
 
 	@Autowired
-	private LinhaAcaoRepository linhaacaoRepository;
+	private LinhaAcaoRepository linhaAcaoRepository;
+	
+	@Autowired
+	private AcaoCategoriaService acaoCategoriaService;
 
-	public LinhaAcao salvar(LinhaAcao linhaacao) {
-		return linhaacaoRepository.save(linhaacao);
+	public LinhaAcao salvar(LinhaAcao linhaAcao) {
+		validar(linhaAcao);
+		linhaAcao.ativar();
+		return linhaAcaoRepository.save(linhaAcao);
+	}
+	
+	public LinhaAcao atualizar(Long codigo, LinhaAcao linhaAcao) {
+		LinhaAcao linhaAcaoSave = buscarPeloCodigo(codigo);	
+		validar(linhaAcao);	
+		BeanUtils.copyProperties(linhaAcao, linhaAcaoSave, "id","status","incluidoEm");
+		linhaAcaoSave.setAlteradoEm(LocalDate.now());
+		return linhaAcaoRepository.save(linhaAcaoSave);
 	}
 
 	public LinhaAcao buscarPeloCodigo(Long codigo) {
-		LinhaAcao linhaacaoSalva = linhaacaoRepository.findById(codigo).get();
-		if (linhaacaoSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return linhaacaoSalva;
+		LinhaAcao linhaAcaoSalva = linhaAcaoRepository
+				.findById(codigo)
+				.orElseThrow(()-> new PortalException("Id não encontrado"));
+		return linhaAcaoSalva;
 	}
-
-	public LinhaAcao atualizar(Long codigo, LinhaAcao linhaacao) {
-		LinhaAcao linhaacaoSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(linhaacao, linhaacaoSave, "linhaAcaoId");
-		return linhaacaoRepository.save(linhaacaoSave);
-	}
-
+	
 	public Page<LinhaAcao> pesquisar(Pageable pageable){
-		return linhaacaoRepository.findAll(pageable);
+		return linhaAcaoRepository.findAll(pageable);
 	}
 
 	public List<LinhaAcao> listarTodos() {
-		return linhaacaoRepository.findAll();
+		return linhaAcaoRepository.findAll();
 	}
 
 	public void remover(Long codigo) {
-		linhaacaoRepository.deleteById(codigo);
+		LinhaAcao linhaAcaoSalva = buscarPeloCodigo(codigo);
+		linhaAcaoSalva.inativar();
+		linhaAcaoRepository.save(linhaAcaoSalva);
 	}
-
+	
+	private void validar(LinhaAcao linhaAcao) {
+		AcaoCategoria acaoCategoria = acaoCategoriaService.buscarPeloCodigo(linhaAcao.getAcaoCategoria().getId());
+		linhaAcao.setAcaoCategoria(acaoCategoria);
+	}
 }

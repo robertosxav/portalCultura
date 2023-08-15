@@ -53,7 +53,7 @@ public class LinhaAcao implements Serializable{
 	private LocalDate alteradoEm;
 
 	@ManyToOne
-	@JoinColumn(name = "id",referencedColumnName = "acao_categoria_id")
+	@JoinColumn(name = "acao_categoria_id",referencedColumnName = "acao_categoria_id")
 	private AcaoCategoria acaoCategoria;
 
 	public void ativar() {
