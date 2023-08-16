@@ -20,6 +20,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,8 +64,9 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 
-@SuppressWarnings("deprecation")
+
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 		
 		
@@ -103,13 +105,6 @@ public class SecurityConfig {
 				.formLogin(withDefaults())
 				.authorizeHttpRequests(authorize ->authorize
 						.requestMatchers("/publicos/**").permitAll()
-						.requestMatchers("/swagger-ui.html").permitAll()
-						.requestMatchers("/swagger-ui/**").permitAll()
-		                .requestMatchers("/webjars/**").permitAll()
-		                .requestMatchers("/content/**").permitAll()
-		                .requestMatchers("/swagger-resources/**").permitAll()
-		                .requestMatchers("/api-docs/**").permitAll()
-		                .requestMatchers(HttpMethod.GET, "/v3/**").permitAll()
 						 .anyRequest().authenticated())
 				.build();
 	}
