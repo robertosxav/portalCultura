@@ -29,7 +29,7 @@ public class User implements UserDetails,Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "SEQUENCE_USUARIO")
-	@SequenceGenerator(name = "SEQUENCE_USUARIO",sequenceName = "usuario_id",allocationSize = 1)
+	@SequenceGenerator(name = "SEQUENCE_USUARIO",sequenceName = "user_id",allocationSize = 1)
     @Column(name="user_id")
     private Long userId;
     
