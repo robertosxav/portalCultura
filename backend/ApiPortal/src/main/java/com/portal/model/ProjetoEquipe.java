@@ -42,7 +42,7 @@ public class ProjetoEquipe implements Serializable{
 	private String miniCv;
 
 	@ManyToOne
-	@JoinColumn(name = "projeto_id",referencedColumnName = "projeto_id")
+	@JoinColumn(name = "projeto_id",referencedColumnName = "projeto_id",nullable = false)
 	private Projeto projeto;
 
 
