@@ -56,7 +56,7 @@ public class PessoaService {
 			usuarioService.criarUsuario(user);
 		}
 		
-		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_FISICA)) {	
+		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_JURIDICA)) {	
 			User user = new User(pessoaDto.getCnpj(),pessoaDto.getSenha(),true,true,true,true); 
 			usuarioService.criarUsuario(user);
 		}
