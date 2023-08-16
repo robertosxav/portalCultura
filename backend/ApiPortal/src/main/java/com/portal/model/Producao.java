@@ -1,17 +1,27 @@
 package com.portal.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.model.enuns.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "producao",schema="public") 
 public class Producao implements Serializable{ 
@@ -19,63 +29,23 @@ public class Producao implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_PRODUCAO")
+	@SequenceGenerator(name = "SEQUENCE_PRODUCAO", sequenceName = "public.producao_id", allocationSize = 1)
 	@Column(name = "producao_id")
-	private Long producaoId;
+	private Long id;
 
 	@Column(name = "producao_nome")
-	private String producaoNome;
+	private String nomeProducao;
 
 	@Column(name = "producao_ativo")
-	private Integer producaoAtivo;
+	private StatusEnum producaoAtivo;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "producao_inc_em")
-	private Date producaoIncEm;
+	private LocalDate incluidoEm;
 
-	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "producao_upd_em")
-	private Date producaoUpdEm;
-
-	public Long getProducaoId() {
-		return producaoId;
-	}
-	 
-	public void setProducaoId(Long producaoId) {
-		this.producaoId = producaoId;
-	}
-	 
-	public String getProducaoNome() {
-		return producaoNome;
-	}
-	 
-	public void setProducaoNome(String producaoNome) {
-		this.producaoNome = producaoNome;
-	}
-	 
-	public Integer getProducaoAtivo() {
-		return producaoAtivo;
-	}
-	 
-	public void setProducaoAtivo(Integer producaoAtivo) {
-		this.producaoAtivo = producaoAtivo;
-	}
-	 
-	public Date getProducaoIncEm() {
-		return producaoIncEm;
-	}
-	 
-	public void setProducaoIncEm(Date producaoIncEm) {
-		this.producaoIncEm = producaoIncEm;
-	}
-	 
-	public Date getProducaoUpdEm() {
-		return producaoUpdEm;
-	}
-	 
-	public void setProducaoUpdEm(Date producaoUpdEm) {
-		this.producaoUpdEm = producaoUpdEm;
-	}
-	 
+	private LocalDate atualizadoEm;
 
 } 

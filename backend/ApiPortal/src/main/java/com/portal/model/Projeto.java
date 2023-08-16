@@ -7,8 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "projeto",schema="public") 
 public class Projeto implements Serializable{ 
@@ -16,83 +27,32 @@ public class Projeto implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_PROJETO")
+	@SequenceGenerator(name = "SEQUENCE_PROJETO", sequenceName = "public.projeto_id", allocationSize = 1)
 	@Column(name = "projeto_id")
-	private Long projetoId;
+	private Long id;
 
-	@Column(name = "pessoa_id")
-	private String pessoaId;
+	@Column(name = "projeto_nome",nullable = false)
+	private Integer nomeProjeto;
 
-	@Column(name = "projeto_nome")
-	private Integer projetoNome;
+	@Column(name = "projeto_status",nullable = false)
+	private Integer status;
 
-	@Column(name = "projeto_status")
-	private Integer projetoStatus;
+	@ManyToOne()
+	@JoinColumn(name = "pessoa_id",referencedColumnName = "pessoa_id",nullable = false)
+	private Pessoa pessoa;
+	
+	@ManyToOne()
+	@JoinColumn(name = "producao_id",referencedColumnName = "producao_id",nullable = false)
+	private Producao producao;
 
-	@Column(name = "producao_id")
-	private Integer producaoId;
+	@ManyToOne()
+	@JoinColumn(name = "area_cultural_id",referencedColumnName = "area_cultural_id",nullable = false)
+	private Integer areaCultural;
 
-	@Column(name = "area_cultural_id")
-	private Integer areaCulturalId;
-
-	@Column(name = "edital_id")
+	@ManyToOne()
+	@JoinColumn(name = "edital_id",referencedColumnName = "edital_id",nullable = false)
 	private String editalId;
 
-	public Long getProjetoId() {
-		return projetoId;
-	}
-	 
-	public void setProjetoId(Long projetoId) {
-		this.projetoId = projetoId;
-	}
-	 
-	public String getPessoaId() {
-		return pessoaId;
-	}
-	 
-	public void setPessoaId(String pessoaId) {
-		this.pessoaId = pessoaId;
-	}
-	 
-	public Integer getProjetoNome() {
-		return projetoNome;
-	}
-	 
-	public void setProjetoNome(Integer projetoNome) {
-		this.projetoNome = projetoNome;
-	}
-	 
-	public Integer getProjetoStatus() {
-		return projetoStatus;
-	}
-	 
-	public void setProjetoStatus(Integer projetoStatus) {
-		this.projetoStatus = projetoStatus;
-	}
-	 
-	public Integer getProducaoId() {
-		return producaoId;
-	}
-	 
-	public void setProducaoId(Integer producaoId) {
-		this.producaoId = producaoId;
-	}
-	 
-	public Integer getAreaCulturalId() {
-		return areaCulturalId;
-	}
-	 
-	public void setAreaCulturalId(Integer areaCulturalId) {
-		this.areaCulturalId = areaCulturalId;
-	}
-	 
-	public String getEditalId() {
-		return editalId;
-	}
-	 
-	public void setEditalId(String editalId) {
-		this.editalId = editalId;
-	}
-	 
-
+	
 } 

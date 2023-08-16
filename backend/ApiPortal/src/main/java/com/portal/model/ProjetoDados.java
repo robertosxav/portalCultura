@@ -7,8 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "projeto_dados",schema="public") 
 public class ProjetoDados implements Serializable{ 
@@ -16,116 +27,38 @@ public class ProjetoDados implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_PROJETO_DADOS")
+	@SequenceGenerator(name = "SEQUENCE_PROJETO_DADOS", sequenceName = "public.projeto_dados_id", allocationSize = 1)
 	@Column(name = "projeto_dados_id")
-	private Long projetoDadosId;
+	private Long id;
 
-	@Column(name = "projeto_id")
-	private String projetoId;
+	@ManyToOne()
+	@JoinColumn(name = "projeto_id",referencedColumnName = "projeto_id")
+	private Projeto projeto;
 
-	@Column(name = "projeto_dados_resumo")
-	private String projetoDadosResumo;
+	@Column(name = "projeto_dados_resumo",nullable = false)
+	private String resumo;
 
-	@Column(name = "projeto_dados_descricao")
-	private String projetoDadosDescricao;
+	@Column(name = "projeto_dados_descricao",nullable = false)
+	private String descricao;
 
-	@Column(name = "projeto_dados_objetivos")
-	private String projetoDadosObjetivos;
+	@Column(name = "projeto_dados_objetivos",nullable = false)
+	private String objetivos;
 
-	@Column(name = "projeto_dados_justificativa")
-	private String projetoDadosJustificativa;
+	@Column(name = "projeto_dados_justificativa",nullable = false)
+	private String justificativa;
 
-	@Column(name = "projeto_dados_estrategia")
-	private String projetoDadosEstrategia;
+	@Column(name = "projeto_dados_estrategia",nullable = false)
+	private String estrategia;
 
-	@Column(name = "projeto_dados_parcerias")
-	private String projetoDadosParcerias;
+	@Column(name = "projeto_dados_parcerias",nullable = false)
+	private String parcerias;
 
-	@Column(name = "projeto_dados_acessibilidade")
-	private String projetoDadosAcessibilidade;
+	@Column(name = "projeto_dados_acessibilidade",nullable = false)
+	private String acessibilidade;
 
-	@Column(name = "projeto_dados_produto")
-	private String projetoDadosProduto;
+	@Column(name = "projeto_dados_produto",nullable = false)
+	private String produto;
 
-	public Long getProjetoDadosId() {
-		return projetoDadosId;
-	}
-	 
-	public void setProjetoDadosId(Long projetoDadosId) {
-		this.projetoDadosId = projetoDadosId;
-	}
-	 
-	public String getProjetoId() {
-		return projetoId;
-	}
-	 
-	public void setProjetoId(String projetoId) {
-		this.projetoId = projetoId;
-	}
-	 
-	public String getProjetoDadosResumo() {
-		return projetoDadosResumo;
-	}
-	 
-	public void setProjetoDadosResumo(String projetoDadosResumo) {
-		this.projetoDadosResumo = projetoDadosResumo;
-	}
-	 
-	public String getProjetoDadosDescricao() {
-		return projetoDadosDescricao;
-	}
-	 
-	public void setProjetoDadosDescricao(String projetoDadosDescricao) {
-		this.projetoDadosDescricao = projetoDadosDescricao;
-	}
-	 
-	public String getProjetoDadosObjetivos() {
-		return projetoDadosObjetivos;
-	}
-	 
-	public void setProjetoDadosObjetivos(String projetoDadosObjetivos) {
-		this.projetoDadosObjetivos = projetoDadosObjetivos;
-	}
-	 
-	public String getProjetoDadosJustificativa() {
-		return projetoDadosJustificativa;
-	}
-	 
-	public void setProjetoDadosJustificativa(String projetoDadosJustificativa) {
-		this.projetoDadosJustificativa = projetoDadosJustificativa;
-	}
-	 
-	public String getProjetoDadosEstrategia() {
-		return projetoDadosEstrategia;
-	}
-	 
-	public void setProjetoDadosEstrategia(String projetoDadosEstrategia) {
-		this.projetoDadosEstrategia = projetoDadosEstrategia;
-	}
-	 
-	public String getProjetoDadosParcerias() {
-		return projetoDadosParcerias;
-	}
-	 
-	public void setProjetoDadosParcerias(String projetoDadosParcerias) {
-		this.projetoDadosParcerias = projetoDadosParcerias;
-	}
-	 
-	public String getProjetoDadosAcessibilidade() {
-		return projetoDadosAcessibilidade;
-	}
-	 
-	public void setProjetoDadosAcessibilidade(String projetoDadosAcessibilidade) {
-		this.projetoDadosAcessibilidade = projetoDadosAcessibilidade;
-	}
-	 
-	public String getProjetoDadosProduto() {
-		return projetoDadosProduto;
-	}
-	 
-	public void setProjetoDadosProduto(String projetoDadosProduto) {
-		this.projetoDadosProduto = projetoDadosProduto;
-	}
-	 
 
 } 
