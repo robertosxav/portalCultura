@@ -1,10 +1,6 @@
 package com.portal.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.portal.model.enuns.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

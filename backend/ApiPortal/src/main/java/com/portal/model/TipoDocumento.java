@@ -1,17 +1,27 @@
 package com.portal.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.model.enuns.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tipo_documento") 
 public class TipoDocumento implements Serializable{ 
@@ -19,63 +29,23 @@ public class TipoDocumento implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_TIPO_DOCUMENTO")
+	@SequenceGenerator(name = "SEQUENCE_TIPO_DOCUMENTO", sequenceName = "public.tipo_documento_id", allocationSize = 1)
 	@Column(name = "tipo_documento_id")
-	private Long tipoDocumentoId;
+	private Long id;
 
-	@Column(name = "tipo_documento_nome")
-	private String tipoDocumentoNome;
+	@Column(name = "tipo_documento_nome",length = 120,nullable = false)
+	private String nomeDocumento;
 
-	@Column(name = "tipo_documento_ativo")
-	private Integer tipoDocumentoAtivo;
+	@Column(name = "tipo_documento_ativo",nullable = false)
+	private StatusEnum status;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "tipo_documento_inc_em")
-	private Date tipoDocumentoIncEm;
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "tipo_documento_inc_em",nullable = false)
+	private LocalDate incluidoEm;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "tipo_documento_alt_em")
-	private Date tipoDocumentoAltEm;
-
-	public Long getTipoDocumentoId() {
-		return tipoDocumentoId;
-	}
-	 
-	public void setTipoDocumentoId(Long tipoDocumentoId) {
-		this.tipoDocumentoId = tipoDocumentoId;
-	}
-	 
-	public String getTipoDocumentoNome() {
-		return tipoDocumentoNome;
-	}
-	 
-	public void setTipoDocumentoNome(String tipoDocumentoNome) {
-		this.tipoDocumentoNome = tipoDocumentoNome;
-	}
-	 
-	public Integer getTipoDocumentoAtivo() {
-		return tipoDocumentoAtivo;
-	}
-	 
-	public void setTipoDocumentoAtivo(Integer tipoDocumentoAtivo) {
-		this.tipoDocumentoAtivo = tipoDocumentoAtivo;
-	}
-	 
-	public Date getTipoDocumentoIncEm() {
-		return tipoDocumentoIncEm;
-	}
-	 
-	public void setTipoDocumentoIncEm(Date tipoDocumentoIncEm) {
-		this.tipoDocumentoIncEm = tipoDocumentoIncEm;
-	}
-	 
-	public Date getTipoDocumentoAltEm() {
-		return tipoDocumentoAltEm;
-	}
-	 
-	public void setTipoDocumentoAltEm(Date tipoDocumentoAltEm) {
-		this.tipoDocumentoAltEm = tipoDocumentoAltEm;
-	}
-	 
+	@JsonFormat(pattern = "dd/MM/yyyy")
+	@Column(name = "tipo_documento_alt_em",nullable = false)
+	private LocalDate alteradoEm;
 
 } 
