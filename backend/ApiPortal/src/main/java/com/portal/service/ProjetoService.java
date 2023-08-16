@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
 import com.portal.model.Projeto;
 import com.portal.repository.ProjetoRepository;
 
@@ -22,18 +22,17 @@ public class ProjetoService {
 		return projetoRepository.save(projeto);
 	}
 
-	public Projeto buscarPeloCodigo(Long codigo) {
-		Projeto projetoSalva = projetoRepository.findById(codigo).get();
-		if (projetoSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return projetoSalva;
-	}
-
 	public Projeto atualizar(Long codigo, Projeto projeto) {
 		Projeto projetoSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(projeto, projetoSave, "projetoId");
+		BeanUtils.copyProperties(projeto, projetoSave, "id","statusProjeto");
 		return projetoRepository.save(projetoSave);
+	}
+	
+	public Projeto buscarPeloCodigo(Long codigo) {
+		Projeto projetoSalva = projetoRepository
+				.findById(codigo)
+				.orElseThrow(()->new PortalException("Id não encontrado"));
+		return projetoSalva;
 	}
 
 	public Page<Projeto> pesquisar(Pageable pageable){

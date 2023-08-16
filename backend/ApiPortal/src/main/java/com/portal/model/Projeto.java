@@ -36,7 +36,7 @@ public class Projeto implements Serializable{
 	private Integer nomeProjeto;
 
 	@Column(name = "projeto_status",nullable = false)
-	private Integer status;
+	private Integer statusProjeto;
 
 	@ManyToOne()
 	@JoinColumn(name = "pessoa_id",referencedColumnName = "pessoa_id",nullable = false)
