@@ -55,7 +55,6 @@ public class PessoaService {
 		}
 	
 		//verificar se os emails são iguais
-		
 		if(!pessoaDto.getEmail().equals(pessoaDto.getEmailConfirmacao())) {
 			throw new PortalException("Os E-mails informados devem ser iguais");
 		}
