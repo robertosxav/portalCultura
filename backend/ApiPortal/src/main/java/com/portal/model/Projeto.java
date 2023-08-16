@@ -48,11 +48,11 @@ public class Projeto implements Serializable{
 
 	@ManyToOne()
 	@JoinColumn(name = "area_cultural_id",referencedColumnName = "area_cultural_id",nullable = false)
-	private Integer areaCultural;
+	private AreaCultural areaCultural;
 
 	@ManyToOne()
 	@JoinColumn(name = "edital_id",referencedColumnName = "edital_id",nullable = false)
-	private String editalId;
+	private Edital edital;
 
 	
 } 
