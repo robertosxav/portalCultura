@@ -38,7 +38,7 @@ public class Producao implements Serializable{
 	private String nomeProducao;
 
 	@Column(name = "producao_ativo")
-	private StatusEnum producaoAtivo;
+	private StatusEnum status;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "producao_inc_em")
@@ -47,5 +47,15 @@ public class Producao implements Serializable{
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "producao_upd_em")
 	private LocalDate atualizadoEm;
+	
+	public void ativar() {
+		this.incluidoEm = LocalDate.now();
+		this.status = StatusEnum.ATIVO;
+	}
+	
+	public void inativar() {
+		this.atualizadoEm = LocalDate.now();
+		this.status = StatusEnum.INATIVO;
+	}
 
 } 
