@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.model.enuns.TipoPessoaEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,8 +36,29 @@ public class Pessoa implements Serializable{
 	@Column(name = "pessoa_id")
 	private Long id;
 
-	@Column(name = "pessoa_nome",nullable = false)
+	@Column(name = "pessoa_nome",nullable = true)
 	private String nome;
+	
+	@Column(name = "pessoa_nome_fantasia",nullable = true)
+	private String nomeFantasia;
+	
+	@Column(name = "pessoa_razao_social",nullable = true)
+	private String razaoSocial;
+	
+	@Column(name = "pessoa_cnpj",nullable = true)
+	private String cnpj;
+	
+	@Column(name = "pessoa_insc_estadual",nullable = true)
+	private String inscEstadual;
+	
+	@Column(name = "pessoa_insc_municipal",nullable = true)
+	private String inscMunicipal;
+	
+	@Column(name = "pessoa_mei",nullable = true)
+	private Boolean mei;
+	
+	@Enumerated(EnumType.STRING)
+	private TipoPessoaEnum tipoPessoa;
 
 	@Column(name = "pessoa_cpf",nullable = false,unique = true)
 	private String cpf;
@@ -89,5 +113,24 @@ public class Pessoa implements Serializable{
 		this.email = email;
 		this.celular = celular;
 	}
+
+	public Pessoa(String nome, String nomeFantasia, String razaoSocial, String cnpj,String cpf, 
+			String inscEstadual,String inscMunicipal,String email, String celular, Boolean mei,
+			TipoPessoaEnum tipoPessoa) {
+		super();
+		this.nome = nome;
+		this.nomeFantasia = nomeFantasia;
+		this.razaoSocial = razaoSocial;
+		this.cnpj = cnpj;
+		this.inscEstadual = inscEstadual;
+		this.inscMunicipal = inscMunicipal;
+		this.mei = mei;
+		this.tipoPessoa = tipoPessoa;
+		this.cpf = cpf;
+		this.email = email;
+		this.celular = celular;
+	}
+	
+	
 
 } 

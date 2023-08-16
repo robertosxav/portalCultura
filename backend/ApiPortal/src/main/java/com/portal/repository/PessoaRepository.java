@@ -10,4 +10,6 @@ import com.portal.model.Pessoa;
 public interface PessoaRepository extends JpaRepository<Pessoa, Long>{ 
 	
 	Optional<Pessoa> findByCpf(String cpf);
+
+	Optional<Pessoa> findByCnpj(String cnpj);
 } 

@@ -13,6 +13,7 @@ import com.portal.dto.PessoaDto;
 import com.portal.exceptions.PortalException;
 import com.portal.model.Pessoa;
 import com.portal.model.User;
+import com.portal.model.enuns.TipoPessoaEnum;
 import com.portal.repository.PessoaRepository;
 
 import jakarta.transaction.Transactional;
@@ -31,15 +32,36 @@ public class PessoaService {
 		validar(pessoaDto);
 		Pessoa pessoa = new Pessoa(
 					pessoaDto.getNome(),
+					pessoaDto.getNomeFantasia(),
+					pessoaDto.getRazaoSocial(),
+					pessoaDto.getCnpj(),
 					pessoaDto.getCpf(),
+					pessoaDto.getInscEstadual(),
+					pessoaDto.getInscMunicipal(),
 					pessoaDto.getEmail(),
-					pessoaDto.getCelular()
+					pessoaDto.getCelular(),
+					pessoaDto.getMei(),
+					pessoaDto.getTipoPessoa()
 				);
+		
+		/*
+		 * public Pessoa(Long id, String nome, String nomeFantasia, String razaoSocial, String cnpj,String cpf, 
+			String inscEstadual,String inscMunicipal,String email, String celular, Boolean mei,
+			TipoPessoaEnum tipoPessoa)
+		 */
 		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 		
-		User user = new User(pessoaDto.getCpf(),pessoaDto.getSenha(),true,true,true,true); 
+		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_FISICA)) {	
+			User user = new User(pessoaDto.getCpf(),pessoaDto.getSenha(),true,true,true,true); 	
+			usuarioService.criarUsuario(user);
+		}
 		
-		usuarioService.criarUsuario(user);
+		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_FISICA)) {	
+			User user = new User(pessoaDto.getCnpj(),pessoaDto.getSenha(),true,true,true,true); 
+			usuarioService.criarUsuario(user);
+		}
+		
+		
 		return pessoaSalva;
 	}
 	
@@ -47,12 +69,20 @@ public class PessoaService {
 		//Regras de negócio para cadastrar pessoa
 		
 		//verificar se já existe
-		
-		Optional<Pessoa> pessoa = pessoaRepository.findByCpf(pessoaDto.getCpf());
-		
-		if(pessoa.isPresent()) {
-			throw new PortalException("CPF já cadastrado");
+		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_FISICA)) {			
+			Optional<Pessoa> pessoaFisica = pessoaRepository.findByCpf(pessoaDto.getCpf());
+			if(pessoaFisica.isPresent()) {
+				throw new PortalException("CPF já cadastrado");
+			}
 		}
+		
+		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_JURIDICA)) {			
+			Optional<Pessoa> pessoaJuridica = pessoaRepository.findByCnpj(pessoaDto.getCnpj());
+			if(pessoaJuridica.isPresent()) {
+				throw new PortalException("CNPJ já cadastrado");
+			}
+		}
+		
 	
 		//verificar se os emails são iguais
 		if(!pessoaDto.getEmail().equals(pessoaDto.getEmailConfirmacao())) {

@@ -33,7 +33,7 @@ public class PessoaResource {
 	
 	@Operation(description = "Serviço para cadastro de uma pessoa")
 	@PostMapping
-	public ResponseEntity<Pessoa> cadastrarPessoa(@Validated @RequestBody PessoaDto pessoa) {
+	public ResponseEntity<Pessoa> cadastrarPessoa(@RequestBody PessoaDto pessoa) {
 		Pessoa pessoaSalva = pessoaService.cadastrarPessoa(pessoa);
 		return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
 	}
