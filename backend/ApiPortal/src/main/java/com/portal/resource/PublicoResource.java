@@ -16,7 +16,7 @@ import com.portal.service.PessoaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Serviços publicos")
+@Tag(name = "Serviços públicos")
 @RestController
 @RequestMapping("/publicos")
 public class PublicoResource {

@@ -48,4 +48,13 @@ public class TipoDocumento implements Serializable{
 	@Column(name = "tipo_documento_alt_em",nullable = false)
 	private LocalDate alteradoEm;
 
+	public void ativar() {
+		this.incluidoEm = LocalDate.now();
+		this.status = StatusEnum.ATIVO;
+	}
+	
+	public void inativar() {
+		this.alteradoEm = LocalDate.now();
+		this.status = StatusEnum.INATIVO;
+	}
 } 

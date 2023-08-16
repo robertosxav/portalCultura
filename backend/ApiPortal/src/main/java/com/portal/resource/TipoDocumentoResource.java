@@ -16,53 +16,60 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.portal.model.TipoDocumento;
 import com.portal.service.TipoDocumentoService;
 
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Tipos de documentos")
 @RestController
 @RequestMapping("/tiposdocumento")
 public class TipoDocumentoResource {
 
 	@Autowired
-	private TipoDocumentoService tipodocumentoService;
+	private TipoDocumentoService tipoDocumentoService;
 
+	@Operation(description = "Serviço para criar um tipo de documento")
 	@PostMapping
-	public ResponseEntity<TipoDocumento> criar(@Validated @RequestBody TipoDocumento tipodocumento, HttpServletResponse response) {
-		 TipoDocumento tipodocumentoSalva = tipodocumentoService.salvar(tipodocumento);
-		return ResponseEntity.status(HttpStatus.CREATED).body(tipodocumentoSalva);
+	public ResponseEntity<TipoDocumento> criar(@Validated @RequestBody TipoDocumento tipoDocumento) {
+		TipoDocumento tipoDocumentoSalva = tipoDocumentoService.salvar(tipoDocumento);
+		return ResponseEntity.status(HttpStatus.CREATED).body(tipoDocumentoSalva);
 	}
 
-	@GetMapping("/{codigo}")
-	public ResponseEntity<TipoDocumento> buscarPeloCodigo(@PathVariable Long codigo) {
-		TipoDocumento tipodocumento = tipodocumentoService.buscarPeloCodigo(codigo);
-		return tipodocumento != null ? ResponseEntity.ok(tipodocumento) : ResponseEntity.notFound().build();
-	}
-
+	@Operation(description = "Serviço para atualizar um tipo de documento")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<TipoDocumento> atualizar(@PathVariable Long codigo, @Validated @RequestBody TipoDocumento tipodocumento) {
-		TipoDocumento tipodocumentoSalva = tipodocumentoService.atualizar(codigo, tipodocumento);
-		return ResponseEntity.ok(tipodocumentoSalva);
+	public ResponseEntity<TipoDocumento> atualizar(@PathVariable final Long codigo, @Validated @RequestBody TipoDocumento tipoDocumento) {
+		TipoDocumento tipoDocumentoSalva = tipoDocumentoService.atualizar(codigo, tipoDocumento);
+		return ResponseEntity.ok(tipoDocumentoSalva);
 	}
-
+	
+	@Operation(description = "Serviço para buscar um tipo de documento pelo código")
+	@GetMapping("/{codigo}")
+	public ResponseEntity<TipoDocumento> buscarPeloCodigo(@PathVariable final Long codigo) {
+		TipoDocumento tipoDocumento = tipoDocumentoService.buscarPeloCodigo(codigo);
+		return ResponseEntity.ok(tipoDocumento);
+	}
+	
+	@Operation(description = "Serviço para buscar todos tipos de documentos - paginado")
 	@GetMapping
 	public Page<TipoDocumento> pesquisar(Pageable pageable) {
-		return tipodocumentoService.pesquisar(pageable);
+		return tipoDocumentoService.pesquisar(pageable);
 	}
 
+	@Operation(description = "Serviço para buscar todos tipos de documentos")
 	@GetMapping("/all")
 	public List<TipoDocumento> pesquisar() {
-		return tipodocumentoService.listarTodos();
+		return tipoDocumentoService.listarTodos();
 	}
 
+	@Operation(description = "Serviço para exlcuir um tipo de documento - exclusão lógica")
 	@DeleteMapping("/{codigo}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void remover(@PathVariable Long codigo) {
-		tipodocumentoService.remover(codigo);
+	public ResponseEntity<String> remover(@PathVariable Long codigo) {
+		tipoDocumentoService.remover(codigo);
+		return ResponseEntity.ok("Registro excluído com sucesso");
 	}
 
 }

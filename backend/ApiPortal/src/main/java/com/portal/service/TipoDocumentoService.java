@@ -1,5 +1,6 @@
 package com.portal.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
 import com.portal.model.TipoDocumento;
 import com.portal.repository.TipoDocumentoRepository;
 
@@ -16,36 +18,39 @@ import com.portal.repository.TipoDocumentoRepository;
 public class TipoDocumentoService {
 
 	@Autowired
-	private TipoDocumentoRepository tipodocumentoRepository;
+	private TipoDocumentoRepository tipoDocumentoRepository;
 
-	public TipoDocumento salvar(TipoDocumento tipodocumento) {
-		return tipodocumentoRepository.save(tipodocumento);
+	public TipoDocumento salvar(TipoDocumento tipoDocumento) {
+		tipoDocumento.ativar();
+		return tipoDocumentoRepository.save(tipoDocumento);
 	}
 
+	public TipoDocumento atualizar(Long codigo, TipoDocumento tipoDocumento) {
+		TipoDocumento tipoDocumentoSalva = buscarPeloCodigo(codigo);
+		BeanUtils.copyProperties(tipoDocumento, tipoDocumentoSalva, "id","status","incluidoEm");
+		tipoDocumentoSalva.setAlteradoEm(LocalDate.now());
+		return tipoDocumentoRepository.save(tipoDocumentoSalva);
+	}
+	
 	public TipoDocumento buscarPeloCodigo(Long codigo) {
-		TipoDocumento tipodocumentoSalva = tipodocumentoRepository.findById(codigo).get();
-		if (tipodocumentoSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return tipodocumentoSalva;
-	}
-
-	public TipoDocumento atualizar(Long codigo, TipoDocumento tipodocumento) {
-		TipoDocumento tipodocumentoSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(tipodocumento, tipodocumentoSave, "tipoDocumentoId");
-		return tipodocumentoRepository.save(tipodocumentoSave);
+		TipoDocumento tipoDocumentoSalva = tipoDocumentoRepository
+				.findById(codigo)
+				.orElseThrow(()-> new PortalException("Id não encontrado"));
+		return tipoDocumentoSalva;
 	}
 
 	public Page<TipoDocumento> pesquisar(Pageable pageable){
-		return tipodocumentoRepository.findAll(pageable);
+		return tipoDocumentoRepository.findAll(pageable);
 	}
 
 	public List<TipoDocumento> listarTodos() {
-		return tipodocumentoRepository.findAll();
+		return tipoDocumentoRepository.findAll();
 	}
 
 	public void remover(Long codigo) {
-		tipodocumentoRepository.deleteById(codigo);
+		TipoDocumento tipoDocumentoSalva = buscarPeloCodigo(codigo);
+		tipoDocumentoSalva.inativar();
+		tipoDocumentoRepository.save(tipoDocumentoSalva);
 	}
 
 }
