@@ -2,6 +2,8 @@ package com.portal.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +67,17 @@ public class PessoaService {
 		return pessoaSalva;
 	}
 	
+
 	private void validar(PessoaDto pessoaDto) {
 		//Regras de negócio para cadastrar pessoa
+		
+		String regex =  "[./-]";
+		
+		 String regexTelefone = "[\\s()\\-]";
+        
+        Pattern pattern = Pattern.compile(regex);
+
+        Pattern patternTelefone = Pattern.compile(regexTelefone);
 		
 		//verificar se já existe
 		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_FISICA)) {			
@@ -74,6 +85,8 @@ public class PessoaService {
 			if(pessoaFisica.isPresent()) {
 				throw new PortalException("CPF já cadastrado");
 			}
+			Matcher matcher = pattern.matcher(pessoaDto.getCpf());        	
+        	pessoaDto.setCpf( matcher.replaceAll(""));
 		}
 		
 		if(pessoaDto.getTipoPessoa().equals(TipoPessoaEnum.PESSOA_JURIDICA)) {			
@@ -81,13 +94,20 @@ public class PessoaService {
 			if(pessoaJuridica.isPresent()) {
 				throw new PortalException("CNPJ já cadastrado");
 			}
+			
+		  	Matcher matcher = pattern.matcher(pessoaDto.getCnpj());        	
+        	pessoaDto.setCnpj( matcher.replaceAll(""));
 		}
-		
 	
 		//verificar se os emails são iguais
 		if(!pessoaDto.getEmail().equals(pessoaDto.getEmailConfirmacao())) {
 			throw new PortalException("Os E-mails informados devem ser iguais");
 		}
+		
+        String cleanedNumber = pessoaDto.getCelular().replaceAll(regex, "");
+        
+        pessoaDto.setCelular(cleanedNumber);
+
 	}
 
 	public Pessoa atualizarPessoa(Long codigo, Pessoa pessoa) {
