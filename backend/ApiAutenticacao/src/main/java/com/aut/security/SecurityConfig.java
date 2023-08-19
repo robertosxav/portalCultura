@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -58,6 +59,7 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import com.aut.model.User;
+import com.aut.security.token.SecurityAuthenticationSuccessHandler;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -68,7 +70,9 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-		
+	
+	@Autowired
+	SecurityAuthenticationSuccessHandler securityAuthenticationSuccessHandler;
 		
 	@Bean
 	@Order(1)
@@ -81,6 +85,7 @@ public class SecurityConfig {
 				.tokenEndpoint(tokenEndpoint -> tokenEndpoint
 					.accessTokenRequestConverter(new CustomPassordAuthenticationConverter())
 					.authenticationProvider(new CustomPassordAuthenticationProvider(authorizationService(), tokenGenerator()))
+					.accessTokenResponseHandler(securityAuthenticationSuccessHandler)
 					)
 				.oidc(withDefaults())
 				.and()

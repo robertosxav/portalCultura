@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Enumeration;
 
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
@@ -74,14 +75,18 @@ public class CustomPassordAuthenticationConverter implements AuthenticationConve
 
 	private static MultiValueMap<String, String> getParameters(HttpServletRequest request) {
 		Map<String, String[]> parameterMap = request.getParameterMap();
+		Enumeration<String> keysParameters = request.getParameterNames();
+		String b = request.getParameter("password");
+
+	
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>(parameterMap.size());
-		parameterMap.forEach((key, values) -> {
-			if (values.length > 0) {
-				for (String value : values) {
-					parameters.add(key, value);
-				}
-			}
-		});
+		
+		while(keysParameters.hasMoreElements()) {
+			String key = keysParameters.nextElement();
+			String value = request.getParameter(key);
+			
+			parameters.add(key,value);
+		}
 		return parameters;
 	}
 }
