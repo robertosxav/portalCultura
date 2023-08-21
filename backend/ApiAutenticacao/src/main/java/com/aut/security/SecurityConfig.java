@@ -108,9 +108,18 @@ public class SecurityConfig {
 	public SecurityFilterChain appSecurityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.formLogin(withDefaults())
-				.authorizeHttpRequests(authorize ->authorize
-						.requestMatchers("/publicos/**").permitAll()
-						 .anyRequest().authenticated())
+				.authorizeHttpRequests(authorize ->{
+					try {
+						authorize
+								.requestMatchers("/publicos/**").permitAll()
+								 .anyRequest().authenticated()
+								 .and()
+								 .oauth2ResourceServer().jwt();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				})
 				.build();
 	}
 
