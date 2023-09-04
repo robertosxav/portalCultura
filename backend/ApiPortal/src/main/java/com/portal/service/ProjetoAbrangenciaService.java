@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
+import com.portal.model.MicroRegiao;
+import com.portal.model.Projeto;
 import com.portal.model.ProjetoAbrangencia;
 import com.portal.repository.ProjetoAbrangenciaRepository;
 
@@ -16,36 +18,55 @@ import com.portal.repository.ProjetoAbrangenciaRepository;
 public class ProjetoAbrangenciaService {
 
 	@Autowired
-	private ProjetoAbrangenciaRepository projetoabrangenciaRepository;
+	private ProjetoAbrangenciaRepository projetoAbrangenciaRepository;
 
-	public ProjetoAbrangencia salvar(ProjetoAbrangencia projetoabrangencia) {
-		return projetoabrangenciaRepository.save(projetoabrangencia);
+	@Autowired
+	private ProjetoService projetoService;
+	
+	@Autowired
+	private MicroRegiaoService microRegiaoService;
+	
+	public ProjetoAbrangencia adicionarAbrangecia(ProjetoAbrangencia projetoAbrangencia) {
+		validar(projetoAbrangencia);
+		return projetoAbrangenciaRepository.save(projetoAbrangencia);
 	}
 
+
+	public ProjetoAbrangencia atualizar(Long codigo, ProjetoAbrangencia projetoAbrangencia) {
+		ProjetoAbrangencia projetoAbrangenciaSalvo = buscarPeloCodigo(codigo);
+		BeanUtils.copyProperties(projetoAbrangencia, projetoAbrangenciaSalvo, "id");
+		return projetoAbrangenciaRepository.save(projetoAbrangenciaSalvo);
+	}
+	
 	public ProjetoAbrangencia buscarPeloCodigo(Long codigo) {
-		ProjetoAbrangencia projetoabrangenciaSalva = projetoabrangenciaRepository.findById(codigo).get();
-		if (projetoabrangenciaSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return projetoabrangenciaSalva;
-	}
-
-	public ProjetoAbrangencia atualizar(Long codigo, ProjetoAbrangencia projetoabrangencia) {
-		ProjetoAbrangencia projetoabrangenciaSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(projetoabrangencia, projetoabrangenciaSave, "projetoAbrangenciaId");
-		return projetoabrangenciaRepository.save(projetoabrangenciaSave);
+		ProjetoAbrangencia projetoAbrangenciaSalvo = projetoAbrangenciaRepository
+				.findById(codigo)
+				.orElseThrow(()-> new PortalException("Id não encontrado"));		
+		return projetoAbrangenciaSalvo;
 	}
 
 	public Page<ProjetoAbrangencia> pesquisar(Pageable pageable){
-		return projetoabrangenciaRepository.findAll(pageable);
+		return projetoAbrangenciaRepository.findAll(pageable);
 	}
 
 	public List<ProjetoAbrangencia> listarTodos() {
-		return projetoabrangenciaRepository.findAll();
+		return projetoAbrangenciaRepository.findAll();
 	}
 
-	public void remover(Long codigo) {
-		projetoabrangenciaRepository.deleteById(codigo);
+	/*public void remover(Long codigo) {
+		projetoAbrangenciaRepository.deleteById(codigo);
+	}*/
+	
+	private void validar(ProjetoAbrangencia projetoAbrangencia) {
+		Projeto projeto = projetoService.buscarPeloCodigo(projetoAbrangencia.getId());
+		projetoAbrangencia.setProjeto(projeto);
+		
+		MicroRegiao microRegiao = microRegiaoService.buscarPeloCodigo(projetoAbrangencia.getId());
+		projetoAbrangencia.setMicroRegiao(microRegiao);
 	}
 
+
+	public List<ProjetoAbrangencia> listarPorProjeto(Long idProjeto) {
+		return projetoAbrangenciaRepository.listarPorProjeto(idProjeto);
+	}
 }
