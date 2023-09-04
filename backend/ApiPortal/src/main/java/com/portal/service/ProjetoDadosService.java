@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.portal.exceptions.PortalException;
+import com.portal.model.Projeto;
 import com.portal.model.ProjetoDados;
 import com.portal.repository.ProjetoDadosRepository;
 
@@ -16,36 +17,49 @@ import com.portal.repository.ProjetoDadosRepository;
 public class ProjetoDadosService {
 
 	@Autowired
-	private ProjetoDadosRepository projetodadosRepository;
+	private ProjetoDadosRepository projetoDadosRepository;
 
-	public ProjetoDados salvar(ProjetoDados projetodados) {
-		return projetodadosRepository.save(projetodados);
+	@Autowired
+	private ProjetoService projetoService;
+	
+	public ProjetoDados adicionarDadosProjeto(ProjetoDados projetoDados) {
+		validar(projetoDados);
+		return projetoDadosRepository.save(projetoDados);
+	}
+	
+	public ProjetoDados atualizar(Long codigo, ProjetoDados projetoDados) {
+		ProjetoDados projetoDadosSalvo = buscarPeloCodigo(codigo);
+		BeanUtils.copyProperties(projetoDados, projetoDadosSalvo, "id");
+		return projetoDadosRepository.save(projetoDadosSalvo);
 	}
 
 	public ProjetoDados buscarPeloCodigo(Long codigo) {
-		ProjetoDados projetodadosSalva = projetodadosRepository.findById(codigo).get();
-		if (projetodadosSalva == null) {
-		throw new EmptyResultDataAccessException(1);
-			}
-		return projetodadosSalva;
-	}
-
-	public ProjetoDados atualizar(Long codigo, ProjetoDados projetodados) {
-		ProjetoDados projetodadosSave = buscarPeloCodigo(codigo);
-		BeanUtils.copyProperties(projetodados, projetodadosSave, "projetoDadosId");
-		return projetodadosRepository.save(projetodadosSave);
+		ProjetoDados projetoDadosSalva = projetoDadosRepository
+				.findById(codigo)
+				.orElseThrow(()-> new PortalException("Id não encontrado"));
+		return projetoDadosSalva;
 	}
 
 	public Page<ProjetoDados> pesquisar(Pageable pageable){
-		return projetodadosRepository.findAll(pageable);
+		return projetoDadosRepository.findAll(pageable);
 	}
 
 	public List<ProjetoDados> listarTodos() {
-		return projetodadosRepository.findAll();
+		return projetoDadosRepository.findAll();
 	}
 
-	public void remover(Long codigo) {
-		projetodadosRepository.deleteById(codigo);
+	/*public void remover(Long codigo) {
+		projetoDadosRepository.deleteById(codigo);
+	}
+   */
+	
+	public List<ProjetoDados> listarPorProjeto(Long idProjeto) {
+		return projetoDadosRepository.listarPorProjeto(idProjeto);
+	}
+	
+	private void validar(ProjetoDados projetoDados) {
+		Projeto projeto = projetoService.buscarPeloCodigo(projetoDados.getId());
+		projetoDados.setProjeto(projeto);
 	}
 
 }
