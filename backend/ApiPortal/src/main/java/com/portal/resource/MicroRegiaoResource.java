@@ -69,5 +69,9 @@ public class MicroRegiaoResource {
 	public void remover(@PathVariable final Long codigo) {
 		microRegiaoService.remover(codigo);
 	}
-
+	
+	@GetMapping("/listarmacroregiao/{idMacroRegiao}")
+	public List<MicroRegiao> listarMicroRegiaoPorMacroRegiao(@PathVariable Long idMacroRegiao){
+		return microRegiaoService.listarMicroRegiaoPorMacroRegiao(idMacroRegiao);
+	}
 }

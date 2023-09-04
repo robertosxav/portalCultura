@@ -60,4 +60,9 @@ public class MicroRegiaoService {
 		microRegiao.setMacroRegiao(macroRegiao);
 	}
 
+	public List<MicroRegiao> listarMicroRegiaoPorMacroRegiao(Long idMacroRegiao) {
+		return microRegiaoRepository.listarMicroRegiaoPorMacroRegiao(idMacroRegiao);
+		
+	}
+
 }
