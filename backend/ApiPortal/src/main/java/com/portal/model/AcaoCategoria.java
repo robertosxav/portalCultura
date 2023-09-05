@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.portal.model.enuns.StatusEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +40,7 @@ public class AcaoCategoria implements Serializable{
 	private String nome;
 
 	@Column(name = "acao_categoria_ativo",nullable = false)
-	private Boolean status;
+	private StatusEnum status;
 
 	@JsonFormat(pattern="dd/MM/yyyy")
 	@Column(name = "acao_categoria_inc_em",nullable = false)
@@ -51,12 +52,12 @@ public class AcaoCategoria implements Serializable{
 	
 	public void ativar() {
 		this.incluidoEm = LocalDate.now();
-		this.status = true;
+		this.status = StatusEnum.ATIVO;
 	}
 
 	public void inativar() {
 		this.alteradoEm = LocalDate.now();
-		this.status = false;
+		this.status = StatusEnum.INATIVO;
 	}
 
 	
