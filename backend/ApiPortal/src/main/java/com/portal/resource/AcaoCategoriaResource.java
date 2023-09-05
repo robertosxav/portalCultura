@@ -63,6 +63,20 @@ public class AcaoCategoriaResource {
 	public List<AcaoCategoria> pesquisar() {
 		return acaoCategoriaService.listarTodos();
 	}
+	
+	@Operation(description = "Serviço para buscar todas ações de categorias ativas - paginado")
+	@GetMapping("ativos/paginado")
+	public Page<AcaoCategoria> listarAtivosPaginado(Pageable pageable) {
+		return acaoCategoriaService.listarAtivosPaginado(pageable);
+	}
+
+	
+	@Operation(description = "Serviço para buscar todas ações de categorias ativas - lista")
+	@GetMapping("ativos")
+	public List<AcaoCategoria> listarAtivos() {
+		return acaoCategoriaService.listarAtivos();
+	}
+
 
 	@Operation(description = "Serviço para excluir uma ação da categoria")
 	@DeleteMapping("/{codigo}")

@@ -53,4 +53,12 @@ public class AcaoCategoriaService {
 		acaoCategoriaRepository.save(acaoCategoriaSave);
 	}
 
+	public Page<AcaoCategoria> listarAtivosPaginado(Pageable pageable) {
+		return acaoCategoriaRepository.listarAtivosPaginado(pageable);
+	}
+
+	public List<AcaoCategoria> listarAtivos() {
+		return acaoCategoriaRepository.listarAtivos();
+	}
+
 }
