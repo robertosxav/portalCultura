@@ -46,6 +46,14 @@ public class AreaCulturalService {
 		return areaCulturalRepository.findAll();
 	}
 
+	public Page<AreaCultural> listarAtivosPaginado(Pageable pageable) {
+		return areaCulturalRepository.listarAtivosPaginado(pageable);
+	}
+
+	public List<AreaCultural> listarAtivos() {
+		return areaCulturalRepository.listarAtivos();
+	}
+	
 	public void remover(Long codigo) {
 		AreaCultural areaCulturalSave = buscarPeloCodigo(codigo);
 		areaCulturalSave.inativar();

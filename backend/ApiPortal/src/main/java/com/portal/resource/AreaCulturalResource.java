@@ -63,6 +63,18 @@ public class AreaCulturalResource {
 	public List<AreaCultural> pesquisar() {
 		return areaCulturalService.listarTodos();
 	}
+	
+	@Operation(description = "Serviço para buscar todas áreas culturais ativas - paginado")
+	@GetMapping("ativos/paginado")
+	public Page<AreaCultural> listarAtivosPaginado(Pageable pageable) {
+		return areaCulturalService.listarAtivosPaginado(pageable);
+	}
+	
+	@Operation(description = "Serviço para buscar todas áreas culturais ativas - lista")
+	@GetMapping("ativos")
+	public List<AreaCultural> listarAtivos() {
+		return areaCulturalService.listarAtivos();
+	}
 
 	@Operation(description = "Serviço para excluir uma área cultural")
 	@DeleteMapping("/{codigo}")
