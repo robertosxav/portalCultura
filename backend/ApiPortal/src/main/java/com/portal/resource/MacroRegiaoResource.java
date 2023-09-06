@@ -62,11 +62,24 @@ public class MacroRegiaoResource {
 	public List<MacroRegiao> pesquisar() {
 		return macroRegiaoService.listarTodos();
 	}
+	
+	@Operation(description = "Serviço para buscar todas macro regiões ativas - paginado")
+	@GetMapping("ativos/paginado")
+	public Page<MacroRegiao> listarAtivosPaginado(Pageable pageable) {
+		return macroRegiaoService.listarAtivosPaginado(pageable);
+	}
+	
+	@Operation(description = "Serviço para buscar todas macro regiões ativas - lista")
+	@GetMapping("ativos")
+	public List<MacroRegiao> listarAtivos() {
+		return macroRegiaoService.listarAtivos();
+	}
 
 	@Operation(description = "Serviço para excluir uma macro região")
 	@DeleteMapping("/{codigo}")
-	public void remover(@PathVariable final Long codigo) {
+	public ResponseEntity<String> remover(@PathVariable final Long codigo) {
 		macroRegiaoService.remover(codigo);
+		return ResponseEntity.ok("Registro excluído com sucesso");
 	}
 
 }

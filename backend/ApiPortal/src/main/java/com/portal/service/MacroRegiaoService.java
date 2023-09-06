@@ -49,4 +49,12 @@ public class MacroRegiaoService {
 		macroRegiaoSave.inativar();
 		macroRegiaoRepository.save(macroRegiaoSave);
 	}
+
+	public Page<MacroRegiao> listarAtivosPaginado(Pageable pageable) {
+		return macroRegiaoRepository.listarAtivosPaginado(pageable);
+	}
+
+	public List<MacroRegiao> listarAtivos() {
+		return macroRegiaoRepository.listarAtivos();
+	}
 }
