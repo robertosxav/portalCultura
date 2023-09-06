@@ -64,5 +64,12 @@ public class MicroRegiaoService {
 		return microRegiaoRepository.listarMicroRegiaoPorMacroRegiao(idMacroRegiao);
 		
 	}
+	
+	public Page<MacroRegiao> listarAtivosPaginado(Pageable pageable) {
+		return microRegiaoRepository.listarAtivosPaginado(pageable);
+	}
 
+	public List<MacroRegiao> listarAtivos() {
+		return microRegiaoRepository.listarAtivos();
+	}
 }

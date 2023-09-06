@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.portal.model.MacroRegiao;
 import com.portal.model.MicroRegiao;
 import com.portal.service.MicroRegiaoService;
 
@@ -64,14 +65,27 @@ public class MicroRegiaoResource {
 		return microRegiaoService.listarTodos();
 	}
 
-	@Operation(description = "Serviço para excluir uma micro região")
-	@DeleteMapping("/{codigo}")
-	public void remover(@PathVariable final Long codigo) {
-		microRegiaoService.remover(codigo);
-	}
 	
 	@GetMapping("/listarmacroregiao/{idMacroRegiao}")
 	public List<MicroRegiao> listarMicroRegiaoPorMacroRegiao(@PathVariable Long idMacroRegiao){
 		return microRegiaoService.listarMicroRegiaoPorMacroRegiao(idMacroRegiao);
+	}
+	
+	@Operation(description = "Serviço para buscar todas macro regiões ativas - paginado")
+	@GetMapping("ativos/paginado")
+	public Page<MacroRegiao> listarAtivosPaginado(Pageable pageable) {
+		return microRegiaoService.listarAtivosPaginado(pageable);
+	}
+	
+	@Operation(description = "Serviço para buscar todas macro regiões ativas - lista")
+	@GetMapping("ativos")
+	public List<MacroRegiao> listarAtivos() {
+		return microRegiaoService.listarAtivos();
+	}
+	
+	@Operation(description = "Serviço para excluir uma micro região")
+	@DeleteMapping("/{codigo}")
+	public void remover(@PathVariable final Long codigo) {
+		microRegiaoService.remover(codigo);
 	}
 }
