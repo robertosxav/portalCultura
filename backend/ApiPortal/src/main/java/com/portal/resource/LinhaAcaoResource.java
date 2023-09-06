@@ -63,7 +63,19 @@ public class LinhaAcaoResource {
 	public List<LinhaAcao> pesquisar() {
 		return linhaAcaoService.listarTodos();
 	}
-
+	
+	@Operation(description = "Serviço para buscar todas linhas de ações ativas - paginado")
+	@GetMapping("ativos/paginado")
+	public Page<LinhaAcao> listarAtivosPaginado(Pageable pageable) {
+		return linhaAcaoService.listarAtivosPaginado(pageable);
+	}
+	
+	@Operation(description = "Serviço para buscar todas linhas de ações ativas - lista")
+	@GetMapping("ativos")
+	public List<LinhaAcao> listarAtivos() {
+		return linhaAcaoService.listarAtivos();
+	}
+	
 	@Operation(description = "Serviço para excluir uma linha de ação")
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<String> remover(@PathVariable Long codigo) {

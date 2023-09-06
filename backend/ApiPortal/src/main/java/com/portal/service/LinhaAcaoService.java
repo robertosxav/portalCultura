@@ -62,4 +62,12 @@ public class LinhaAcaoService {
 		AcaoCategoria acaoCategoria = acaoCategoriaService.buscarPeloCodigo(linhaAcao.getAcaoCategoria().getId());
 		linhaAcao.setAcaoCategoria(acaoCategoria);
 	}
+
+	public Page<LinhaAcao> listarAtivosPaginado(Pageable pageable) {		
+		return linhaAcaoRepository.listarAtivosPaginado(pageable);
+	}
+
+	public List<LinhaAcao> listarAtivos() {
+		return linhaAcaoRepository.listarAtivos();
+	}
 }
