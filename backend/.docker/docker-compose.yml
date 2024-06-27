@@ -1,14 +1,56 @@
-version: '3.8'
+version: '3.9'
 
 services:
+
+  apiautenticacao:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: ../ApiAutenticacao
+    container_name: portal-cultura-api-auth
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/portal
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks: 
+      - lavanderia   
+    ports:
+      - "8084:8084"
+
+  apiportal:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: ../ApiPortal
+    container_name: portal-cultura-api-portal
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/portal
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks: 
+      - lavanderia   
+    ports:
+      - "8083:8083"      
+
   db:
+    container_name: portal-cultura-db
     image: postgres:14-alpine
     restart: always
     tty: true
     volumes:
       - ./Docker-Compose/PostgreSQL:/var/lib/postgresql/data
     ports:
-      - 5432:5432          
+      - 5432:5432       
+    networks: 
+      - lavanderia   
     healthcheck:
       test: pg_isready
       interval: 10s
@@ -20,3 +62,8 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=portal
       - POSTGRES_SSL=false
+
+
+networks: 
+  lavanderia:
+    driver: bridge      
