@@ -1,5 +1,19 @@
+# Etapa 1: Construir o jar
+FROM maven:3.8.6-amazoncorretto-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn clean install -Dspring.profiles.active=prod
+
+# Etapa 2: Criar a imagem final
 FROM amazoncorretto:17
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} apiautenticacao.jar
-CMD apt-get update -y
-ENTRYPOINT ["java", "-Xmx2048M", "-jar", "/apiautenticacao.jar"]
+WORKDIR /app
+COPY --from=build /app/target/*.jar apiautenticacao.jar
+EXPOSE 8084
+ENTRYPOINT ["java", "-Xmx2048M", "-jar", "apiautenticacao.jar", "--spring.profiles.active=prod"]
+
+
+# FROM amazoncorretto:17
+# ARG JAR_FILE=target/*.jar
+# COPY ${JAR_FILE} apiautenticacao.jar
+# CMD apt-get update -y
+# ENTRYPOINT ["java", "-Xmx2048M", "-jar", "/apiautenticacao.jar"]
