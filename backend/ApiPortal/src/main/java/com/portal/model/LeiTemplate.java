@@ -54,5 +54,6 @@ public class LeiTemplate implements Serializable{
 	public void inativar() {
 		this.status = StatusEnum.INATIVO;
 	}
-
+	
+	
 } 
